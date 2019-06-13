@@ -40,7 +40,7 @@ Plug 'luochen1990/rainbow'
 
 " Go
 Plug 'fatih/vim-go'
-Plug 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 
 " JSX and React
 Plug 'pangloss/vim-javascript'
@@ -51,6 +51,8 @@ Plug 'kien/rainbow_parentheses.vim'
 
 " Colorscheme
 Plug 'joshdick/onedark.vim'
+
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
