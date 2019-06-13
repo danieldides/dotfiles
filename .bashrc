@@ -16,7 +16,8 @@ alias cups="sudo systemctl start org.cups.cupsd.service"
 alias restart-xmonad="echo Recompiling and restarting... &&  xmonad --recompile && xmonad --restart"
 alias vim="nvim"
 
-export EDITOR="vim"
+export VISUAL=vim
+export EDITOR="$VISUAL"
 export TERM="screen-256color"
 export TerminalEmulator="termite"
 
