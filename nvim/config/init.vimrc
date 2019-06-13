@@ -14,8 +14,9 @@ Plug 'tpope/vim-fugitive'
 " Fuzzy search
 Plug 'ctrlpvim/ctrlp.vim'
 
-" Bling bling
-Plug 'bling/vim-airline'
+" Bling
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'https://github.com/vim-scripts/vim-svngutter'
 Plug 'mhinz/vim-signify'
@@ -47,6 +48,9 @@ Plug 'pangloss/vim-javascript'
 
 " Plug 'vim-scripts/paredit.vim'
 Plug 'kien/rainbow_parentheses.vim'
+
+" Colorscheme
+Plug 'joshdick/onedark.vim'
 
 call plug#end()
 
