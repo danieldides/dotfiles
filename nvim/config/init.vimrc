@@ -13,6 +13,7 @@ Plug 'tpope/vim-fugitive'
 
 " Fuzzy search
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'mileszs/ack.vim'
 
 " Bling
 Plug 'vim-airline/vim-airline'
@@ -20,23 +21,20 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'https://github.com/vim-scripts/vim-svngutter'
 Plug 'mhinz/vim-signify'
+Plug 'Yggdroot/indentLine'
 
 " Autocomplete
 Plug 'Shougo/deoplete.nvim'
 Plug 'zchee/deoplete-jedi'
 Plug 'tpope/vim-surround'
 
-" Tags?
-" Plug 'fntlnz/atags.vim'
-"Plug 'ludovicchabant/vim-gutentags'
-Plug 'mileszs/ack.vim'
-
 " Language spcific
 " Clojure
 Plug 'tpope/vim-fireplace'
 Plug 'guns/vim-clojure-static'
 Plug 'tpope/vim-classpath'
-Plug 'luochen1990/rainbow'
+
+" Terraform
 
 " Go
 Plug 'fatih/vim-go'
@@ -51,7 +49,6 @@ Plug 'kien/rainbow_parentheses.vim'
 
 " Colorscheme
 Plug 'joshdick/onedark.vim'
-
 Plug 'sheerun/vim-polyglot'
 
 call plug#end()
