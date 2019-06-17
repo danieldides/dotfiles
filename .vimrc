@@ -1,6 +1,3 @@
-"" -------------------------PLUGINS---------------------------------
-set rtp+=~/.vim/bundle/Vundle.vim
-
 " All plugins must be called between begin/end
 call plug#begin()
 
@@ -86,10 +83,9 @@ filetype indent plugin on
 syntax on
 
 " Change colorscheme
-set background=light
+set background=dark
 set t_Co=256
 " colorscheme base16-ocean
-"colorscheme solarized
 colorscheme onedark
 
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
@@ -206,6 +202,7 @@ au FileType python setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4
 au FileType haskell setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4
 au FileType markdown setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4
 au FileType javascript setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
+au FileType json setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 au FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 
 " In python, highlight tabs (wow this will get annoying if I read a file with
@@ -293,5 +290,3 @@ let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 " Search ignores case unless using capital letters
 set ignorecase
 set smartcase
- 
-
