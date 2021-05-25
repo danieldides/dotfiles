@@ -1,15 +1,12 @@
-# If not running interactively, don't do anything [[ $- != *i* ]] && return
-# [[ $TERM != "screen" ]] && exec tmux
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
 
 alias ls='ls --color=auto'
 alias cls='clear'
-alias arnoldc='sh /home/daniel/.scripts/arnoldc/run.sh'
 alias xup="xrdb ~/.Xresources"
-alias trackpad='sh ~/.scripts/mouse/trackpad.sh'
-alias mouse='sh ~/.scripts/mouse/mouse.sh'
-alias cups="sudo systemctl start org.cups.cupsd.service"
-alias restart-xmonad="echo Recompiling and restarting... &&  xmonad --recompile && xmonad --restart"
 alias vim="nvim"
+alias pass="gopass"
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
@@ -27,7 +24,11 @@ export GOBIN=$HOME/go/bin
 export PATH=$PATH:$GOBIN
 
 export PATH=$PATH:/home/daniel/.local/bin
+export PATH=$PATH:/home/daniel/Applications
+
+source $HOME/.poetry/env
+
 # work
 alias ns="kubectl config set-context \$(kubectl config current-context) --namespace"
 
-PS1='[\u@\h \W]\$ '
+export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
