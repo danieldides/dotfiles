@@ -125,3 +125,10 @@ set noexpandtab
 "set shiftwidth=4
 set tabstop=4
 set shiftround
+
+let g:python_host_prog = "/home/daniel/Projects/env/nvim2/bin/python"
+let g:python3_host_prog = "/home/daniel/Projects/env/nvim3/bin/python"
+
+set completeopt=menuone,noinsert,noselect
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+
