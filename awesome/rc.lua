@@ -1,15 +1,3 @@
---       █████╗ ██╗    ██╗███████╗███████╗ ██████╗ ███╗   ███╗███████╗
---      ██╔══██╗██║    ██║██╔════╝██╔════╝██╔═══██╗████╗ ████║██╔════╝
---      ███████║██║ █╗ ██║█████╗  ███████╗██║   ██║██╔████╔██║█████╗
---      ██╔══██║██║███╗██║██╔══╝  ╚════██║██║   ██║██║╚██╔╝██║██╔══╝
---      ██║  ██║╚███╔███╔╝███████╗███████║╚██████╔╝██║ ╚═╝ ██║███████╗
---      ╚═╝  ╚═╝ ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
-
--- ===================================================================
--- Initialization
--- ===================================================================
-
-
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -29,9 +17,6 @@ awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
 
 -- Import notification appearance
 require("components.notifications")
-
-require("components.exit-screen")
-require("components.volume-adjust")
 
 -- Autostart specified apps
 local apps = require("apps")
@@ -54,7 +39,6 @@ awful.layout.layouts = {
 local tags = require("tags")
 
 -- Import panels
--- local left_panel = require("components.left-panel")
 local top_panel = require("components.top-panel")
 
 -- Set up each screen (add tags & panels)

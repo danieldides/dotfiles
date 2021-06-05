@@ -1,15 +1,3 @@
---      ████████╗ ██████╗ ██████╗     ██████╗  █████╗ ███╗   ██╗███████╗██╗
---      ╚══██╔══╝██╔═══██╗██╔══██╗    ██╔══██╗██╔══██╗████╗  ██║██╔════╝██║
---         ██║   ██║   ██║██████╔╝    ██████╔╝███████║██╔██╗ ██║█████╗  ██║
---         ██║   ██║   ██║██╔═══╝     ██╔═══╝ ██╔══██║██║╚██╗██║██╔══╝  ██║
---         ██║   ╚██████╔╝██║         ██║     ██║  ██║██║ ╚████║███████╗███████╗
---         ╚═╝    ╚═════╝ ╚═╝         ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝
-
--- ===================================================================
--- Initialization
--- ===================================================================
-
-
 local awful = require("awful")
 local beautiful = require("beautiful")
 local wibox = require("wibox")
@@ -22,10 +10,6 @@ local tag_list = require("widgets.top-tag-list")
 
 -- define module table
 local top_panel = {}
-
--- ===================================================================
--- Bar Creation
--- ===================================================================
 
 top_panel.create = function(s)
    local panel = awful.wibar({
@@ -48,9 +32,7 @@ top_panel.create = function(s)
       {
          layout = wibox.layout.fixed.horizontal,
          wibox.layout.margin(wibox.widget.systray(), 0, 0, 3, 3),
-         -- require("widgets.bluetooth"),
-         -- require("widgets.wifi"),
-         -- require("widgets.battery"),
+		 apw,
          require("widgets.layout-box")
       }
    }

@@ -20,7 +20,7 @@ end
 naughty.config.padding = dpi(7)
 naughty.config.spacing = dpi(7)
 naughty.config.icon_dirs = {
-   "/usr/share/icons/Tela-dark",
+   "/usr/share/icons/Numix-light",
    "/usr/share/pixmaps/"
 }
 naughty.config.icon_formats = {"png", "svg"}

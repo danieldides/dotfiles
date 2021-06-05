@@ -277,6 +277,21 @@ keys.globalkeys = gears.table.join(
       {description = "focus previous by index", group = "client"}
    ),
 
+   -- Grow size of master client
+   awful.key({ modkey}, "l",
+	   function ()
+		   awful.tag.incmwfact( 0.05)
+	   end,
+		{description = "increase master width factor", group = "layout"}
+	),
+   awful.key({ modkey}, "h",
+	   function ()
+		   awful.tag.incmwfact(-0.05)
+	   end,
+        {description = "decrease master width factor", group = "layout"}
+	),
+
+   
    -- Number of master clients
    awful.key({modkey, altkey}, "h",
       function()
@@ -433,7 +448,20 @@ keys.clientkeys = gears.table.join(
          c:raise()
       end,
       {description = "(un)maximize", group = "client"}
-   )
+   ),
+
+	awful.key({ modkey}, "o",
+		function (c)
+			c:move_to_screen()
+		end,
+        {description = "move to screen", group = "client"}
+	),
+   awful.key({ modkey}, "t",
+		function (c)
+			c.ontop = not c.ontop
+		end,
+		{description = "toggle keep on top", group = "client"}
+	)
 )
 
 -- Bind all key numbers to tags
