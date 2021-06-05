@@ -20,16 +20,12 @@ Plug 'airblade/vim-gitgutter'
 
 " Fuzzy search
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'mileszs/ack.vim'
 
 " Bling
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Yggdroot/indentLine'
 Plug 'kien/rainbow_parentheses.vim'
-
-" Tags
-" Plug 'liuchengxu/vista.vim'
 
 " Colorscheme
 Plug 'joshdick/onedark.vim'
@@ -40,17 +36,12 @@ Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
 let g:polygot_disabled = ["python"]
 
-" Python
-" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
-
-" Clojure
-" Plug 'tpope/vim-fireplace'
-" Plug 'guns/vim-clojure-static'
-" Plug 'tpope/vim-classpath'
-" 
-" " Go
+" Go
 Plug 'fatih/vim-go'
 
+" 0.5 LSP stuff
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
 call plug#end()
 
