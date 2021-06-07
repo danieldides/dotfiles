@@ -8,12 +8,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 
-" Linters
-Plug 'dense-analysis/ale'
-
-" Autocomplete
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 " VCS 
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -50,6 +44,8 @@ Plug 'mhartington/formatter.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make', 'branch': 'main' }
+
 
 call plug#end()
 

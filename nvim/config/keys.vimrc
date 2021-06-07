@@ -70,3 +70,12 @@ imap <silent> <c-p> <Plug>(completion_trigger)
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Formatter
+nnoremap <silent> <leader>F :Format<CR>
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
