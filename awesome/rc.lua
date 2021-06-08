@@ -22,12 +22,6 @@ require("components.notifications")
 local apps = require("apps")
 apps.autostart()
 
-
--- ===================================================================
--- Set Up Screen & Connect Signals
--- ===================================================================
-
-
 -- Define tag layouts
 awful.layout.layouts = {
    awful.layout.suit.tile,
@@ -87,24 +81,8 @@ client.connect_signal("manage", function (c)
 end)
 
 
--- ===================================================================
--- Client Focusing
--- ===================================================================
-
-
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
-
--- -- Focus clients under mouse
--- client.connect_signal("mouse::enter", function(c)
---    c:emit_signal("request::activate", "mouse_enter", {raise = false})
--- end)
-
-
--- ===================================================================
--- Garbage collection (allows for lower memory consumption)
--- ===================================================================
-
 
 collectgarbage("setpause", 110)
 collectgarbage("setstepmul", 1000)

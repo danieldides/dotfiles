@@ -16,19 +16,12 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 
 " Bling
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'Yggdroot/indentLine'
 Plug 'kien/rainbow_parentheses.vim'
+Plug 'hoob3rt/lualine.nvim'
 
 " Colorscheme
 Plug 'joshdick/onedark.vim'
-
-" --- Language specific ---
-
-" General
-Plug 'sheerun/vim-polyglot'
-let g:polygot_disabled = ["python"]
 
 " Go
 Plug 'fatih/vim-go'
@@ -45,7 +38,6 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make', 'branch': 'main' }
-
 
 call plug#end()
 
