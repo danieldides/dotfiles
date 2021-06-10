@@ -18,10 +18,6 @@ awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
 -- Import notification appearance
 require("components.notifications")
 
--- Autostart specified apps
-local apps = require("apps")
-apps.autostart()
-
 -- Define tag layouts
 awful.layout.layouts = {
    awful.layout.suit.tile,
