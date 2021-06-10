@@ -7,7 +7,8 @@ All my various configurations and customizatoins, accumulated in one place.
 Install language servers:
 
 ```bash
-npm install -g pyright typescript typescript-language-server
+npm install -g pyright typescript typescript-language-server prettier
+luarocks install --server=https://luarocks.org/dev luaformatter
 ```
 
 ## Awesome
