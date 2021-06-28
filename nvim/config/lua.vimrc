@@ -1,9 +1,5 @@
 lua << EOF
 -- LSP 
--- require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
--- require'lspconfig'.gopls.setup{}
--- require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
-
 local nvim_lsp = require('lspconfig')
 
 local on_attach = function(client, bufnr)
@@ -20,7 +16,7 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
 	buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
 	buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-	buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+	-- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
 	buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
 	buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
 	buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -36,13 +32,22 @@ local on_attach = function(client, bufnr)
 
 end
 
-local servers = { "pyright", "gopls", "tsserver" }
+local servers = { "pyright", "gopls", "tsserver", "clangd" }
 
-for _, lsp in ipairs(servers) do
-	nvim_lsp[lsp].setup { on_attach = on_attach }
+for _, server in ipairs(servers) do
+	nvim_lsp[server].setup { on_attach = on_attach }
 end
 
-  
+-- Arduino requires more configuration
+nvim_lsp.arduino_language_server.setup({
+	cmd =  {
+		-- Required
+		"arduino-language-server",
+		"-cli-config", "/home/daniel/.arduino15/arduino-cli.yml"
+	};
+	on_attach = on_attach;
+})
+
 -- TreeSitter
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
