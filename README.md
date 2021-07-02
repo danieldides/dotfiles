@@ -11,4 +11,4 @@ npm install -g pyright typescript typescript-language-server
 ```
 
 ## Awesome
-Honestly I've lost the history along the way but it's largely based off of: https://github.com/WillPower3309/awesome-dotfiles.
+Largely based off of: https://github.com/WillPower3309/awesome-dotfiles.
