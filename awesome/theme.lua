@@ -64,7 +64,6 @@ theme.layout_tile = "~/.config/awesome/icons/layouts/view-quilt.png"
 theme.layout_floating = "~/.config/awesome/icons/layouts/view-float.png"
 theme.layout_max = "~/.config/awesome/icons/layouts/arrow-expand-all.png"
 
--- theme.icon_theme = "Tela-dark"
 theme.icon_theme = "Materia-light"
 
 -- return theme

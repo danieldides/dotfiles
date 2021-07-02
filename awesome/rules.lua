@@ -1,15 +1,3 @@
---      ██████╗ ██╗   ██╗██╗     ███████╗███████╗
---      ██╔══██╗██║   ██║██║     ██╔════╝██╔════╝
---      ██████╔╝██║   ██║██║     █████╗  ███████╗
---      ██╔══██╗██║   ██║██║     ██╔══╝  ╚════██║
---      ██║  ██║╚██████╔╝███████╗███████╗███████║
---      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚══════╝
-
--- ===================================================================
--- Initialization
--- ===================================================================
-
-
 local awful = require("awful")
 local beautiful = require("beautiful")
 
@@ -19,12 +7,6 @@ local screen_width = awful.screen.focused().geometry.width
 
 -- define module table
 local rules = {}
-
-
--- ===================================================================
--- Rules
--- ===================================================================
-
 
 -- return a table of client rules including provided keys / buttons
 function rules.create(clientkeys, clientbuttons)
@@ -51,13 +33,8 @@ function rules.create(clientkeys, clientbuttons)
                "DTA",
                "copyq",
             },
-            class = {
-               "Nm-connection-editor"
-            },
-            name = {
-               "Event Tester",
-               "Steam Guard - Computer Authorization Required"
-            },
+            class = {},
+            name = {},
             role = {
                "pop-up",
                "GtkFileChooserDialog"
@@ -75,42 +52,6 @@ function rules.create(clientkeys, clientbuttons)
                "Terraria.bin.x86",
             },
          }, properties = {fullscreen = true}
-      },
-
-      -- "Switch to tag"
-      -- These clients make you switch to their tag when they appear
-      {
-         rule_any = {
-            class = {
-               "Firefox"
-            },
-         }, properties = {switchtotag = true}
-      },
-
-      -- Visualizer
-      {
-         rule_any = {name = {"cava"}},
-         properties = {
-            floating = true,
-            maximized_horizontal = true,
-            sticky = true,
-            ontop = false,
-            skip_taskbar = true,
-            below = true,
-            focusable = false,
-            height = screen_height * 0.40,
-            opacity = 0.6
-         },
-         callback = function (c)
-            decorations.hide(c)
-            awful.placement.bottom(c)
-         end
-      },
-
-      -- Rofi
-      {
-         rule_any = {name = {"rofi"}},
-         properties = {maximized = true, ontop = true}
       },
 
       -- File chooser dialog

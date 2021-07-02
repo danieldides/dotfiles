@@ -35,7 +35,8 @@ end
 local servers = { "pyright", "gopls", "tsserver", "clangd" }
 
 for _, server in ipairs(servers) do
-	nvim_lsp[server].setup { on_attach = on_attach }
+	nvim_lsp[lsp].setup { on_attach = on_attach, flags = { debounce_text_changes = 500, } }
+
 end
 
 -- Arduino requires more configuration
@@ -48,6 +49,12 @@ nvim_lsp.arduino_language_server.setup({
 	on_attach = on_attach;
 })
 
+for _, lsp in ipairs(servers) do
+	nvim_lsp[lsp].setup { on_attach = on_attach, flags = { debounce_text_changes = 500, } }
+end
+
+ 
+>>>>>>> Stashed changes
 -- TreeSitter
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages

@@ -13,3 +13,6 @@ luarocks install --server=https://luarocks.org/dev luaformatter
 
 ## Awesome
 Largely based off of: https://github.com/WillPower3309/awesome-dotfiles.
+
+Components:
+* Titlebars:    https://raw.githubusercontent.com/1jss/awesome-lighter/main/awesome/components/titlebar.lua
