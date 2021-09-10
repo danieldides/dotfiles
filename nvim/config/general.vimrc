@@ -165,3 +165,11 @@ let g:python3_host_prog = "/home/daniel/Projects/env/nvim3/bin/python"
 set completeopt=menuone,noinsert,noselect
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 
+"" Disable many vim-go features
+" Disable vim-go's go-to-definition in favor of LSP
+let g:go_def_mapping_enabled = 0
+
+" Disable code completion by vim-go
+let g:go_code_completion_enabled = 0
+
+let g:go_gopls_enabled = 1

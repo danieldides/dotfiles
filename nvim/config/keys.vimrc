@@ -61,8 +61,13 @@ inoremap <C-S-tab> <Esc>:tabprevious<CR>i
 inoremap <C-tab>   <Esc>:tabnext<CR>i
 inoremap <C-t>     <Esc>:tabnew<CR>
 
+" LspSaga
 " Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+" Show signature
+nnoremap <silent> gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
+" Cleaner rename
+nnoremap <leader>s <cmd>lua require('lspsaga.rename').rename()<CR>
 
 "map <c-p> to manually trigger completion
 imap <silent> <c-p> <Plug>(completion_trigger)

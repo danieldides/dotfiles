@@ -27,7 +27,16 @@ require('formatter').setup({
 				stdin = true
 			}
 		end
-	}
+	},
+	python = {
+       function()
+          return {
+            exe = "black",
+			args = { vim.api.nvim_buf_get_name(0) },
+			stdin = false
+          }
+        end
+    },
   }
 })
 

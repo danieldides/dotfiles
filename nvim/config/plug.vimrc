@@ -12,9 +12,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
-" Fuzzy search
-Plug 'ctrlpvim/ctrlp.vim'
-
 " Bling
 Plug 'Yggdroot/indentLine'
 Plug 'kien/rainbow_parentheses.vim'
@@ -26,10 +23,11 @@ Plug 'joshdick/onedark.vim'
 " Go
 Plug 'fatih/vim-go'
 
-" 0.5 LSP stuff
-Plug 'neovim/nvim-lspconfig'
+" Plug 'neovim/nvim-lspconfig'
+Plug 'danieldides/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'glepnir/lspsaga.nvim'
 
 Plug 'mhartington/formatter.nvim'
 
