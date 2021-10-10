@@ -25,7 +25,14 @@ Plug 'fatih/vim-go'
 
 " Plug 'neovim/nvim-lspconfig'
 Plug 'danieldides/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
+" Plug 'nvim-lua/completion-nvim' (unmaintained)
+
+" nvim-cmp completion
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
+
+
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'glepnir/lspsaga.nvim'
 
