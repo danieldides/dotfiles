@@ -15,11 +15,6 @@ root.buttons(keys.desktopbuttons)
 local create_rules = require("rules").create
 awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
 
--- Import notification appearance
-require("components.notifications")
-
--- Import titlebar
-require("components.titlebars")
 
 -- Define tag layouts
 awful.layout.layouts = {
@@ -31,6 +26,13 @@ local tags = require("tags")
 
 -- Import panels
 local top_panel = require("components.top-panel")
+
+-- Import notification appearance
+require("components.notifications")
+
+-- Import titlebar
+require("components.titlebars")
+
 
 -- Set up each screen (add tags & panels)
 awful.screen.connect_for_each_screen(function(s)
