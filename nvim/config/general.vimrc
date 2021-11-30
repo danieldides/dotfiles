@@ -1,6 +1,7 @@
 " Search ignores case unless using capital letters
 set ignorecase
 set smartcase
+set spell spellang=en_us
 
 " Set 'nocompatible' to ward off unexpected things that your distro might
 " have made, as well as sanely reset options when re-sourcing .vimrc
