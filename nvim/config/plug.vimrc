@@ -23,17 +23,13 @@ Plug 'joshdick/onedark.vim'
 " Go
 Plug 'fatih/vim-go'
 
-" Plug 'neovim/nvim-lspconfig'
-Plug 'danieldides/nvim-lspconfig'
-" Plug 'nvim-lua/completion-nvim' (unmaintained)
+Plug 'neovim/nvim-lspconfig'
 
-" nvim-cmp completion
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
 
-
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'glepnir/lspsaga.nvim'
 
 Plug 'mhartington/formatter.nvim'
