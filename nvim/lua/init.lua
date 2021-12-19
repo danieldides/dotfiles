@@ -4,4 +4,5 @@ require("config.formatter")
 require("config.lsp")
 require("config.telescope")
 require("config.treesitter")
+require("config.which-key")
 

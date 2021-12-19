@@ -7,6 +7,7 @@ Plug 'scrooloose/nerdtree'
 " Nice to haves
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
+Plug 'folke/which-key.nvim'
 
 " VCS 
 Plug 'tpope/vim-fugitive'

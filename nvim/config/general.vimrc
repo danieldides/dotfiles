@@ -38,6 +38,8 @@ let g:airline_theme='onedark'
 "     set termguicolors
 "   endif
 " endif
+"
+set termguicolors
 
 
 " Vim with default settings does not allow easy switching between multiple files
@@ -116,8 +118,7 @@ set cmdheight=2
 " Display line numbers on the left
 set number
  
-" Quickly time out on keycodes, but never time out on mappings
-set notimeout ttimeout ttimeoutlen=200
+set timeoutlen=2000
  
 " Use <F11> to toggle between 'paste' and 'nopaste'
 set pastetoggle=<F11>
