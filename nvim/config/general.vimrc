@@ -39,7 +39,7 @@ let g:airline_theme='onedark'
 "   endif
 " endif
 "
-set termguicolors
+" set termguicolors
 
 
 " Vim with default settings does not allow easy switching between multiple files
@@ -139,7 +139,7 @@ set signcolumn=yes
 " If we're working with a Python, Haskell file, expand tabs to 4 spaces
 au FileType python setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4
 au FileType haskell setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4
-au FileType markdown setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4
+au FileType markdown setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 conceallevel=0
 au FileType javascript setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 au FileType json setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 au FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
@@ -177,3 +177,4 @@ let g:go_def_mapping_enabled = 0
 let g:go_code_completion_enabled = 0
 
 let g:go_gopls_enabled = 1
+
