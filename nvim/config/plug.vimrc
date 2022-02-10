@@ -20,9 +20,6 @@ Plug 'hoob3rt/lualine.nvim'
 " Colorscheme
 Plug 'joshdick/onedark.vim'
 
-" Go
-Plug 'fatih/vim-go'
-
 Plug 'neovim/nvim-lspconfig'
 
 Plug 'hrsh7th/cmp-nvim-lsp'

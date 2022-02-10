@@ -82,6 +82,14 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>",
                    opts)
 
+    local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
+
+    if filetype == 'go' then
+        vim.cmd [[autocmd BufWritePre <buffer> :lua require("config.helpers").goimports(2000)]]
+        -- gopls requires a require to list workspace arguments.
+        vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>]]
+    end
+
 end
 
 local servers = {"pyright", "gopls", "tsserver", "clangd"}
