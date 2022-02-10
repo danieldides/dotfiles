@@ -35,10 +35,6 @@ endfunction
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
 map Y y$
- 
-" Map <C-L> (redraw screen) to also turn off search highlighting until the
-" next search
-" nnoremap <C-/> :nohl<CR><C-L>
 
 " Escape will exit to Normal mode in terminals
 tnoremap <Esc> <C-\><C-n>
@@ -79,8 +75,20 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Formatter
 nnoremap <silent> <leader>F :Format<CR>
 
-" Find files using Telescope command-line sugar.
+" Find files using Telescope 
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+" LSP
+nnoremap <leader>p = <cmd>lua vim.diagnostic.goto_prev()<CR>
+nnoremap <leader>n = <cmd>lua vim.diagnostic.goto_next()<CR>
+nnoremap <leader>j = <cmd>Telescope lsp_dynamic_workspace_symbols<CR>
+" nnoremap <leader>i = <cmd>Telescope lsp_implementations<CR>
+" nnoremap <leader>a = <cmd>Telescope lsp_code_actions<CR>
+
+" When text is wrapped, move by terminal rows, not lines, unless a count is provided
+noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
+noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
+
