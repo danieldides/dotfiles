@@ -17,12 +17,13 @@ Plug 'airblade/vim-gitgutter'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'hoob3rt/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Colorscheme
 Plug 'joshdick/onedark.vim'
 
+" LSP
 Plug 'neovim/nvim-lspconfig'
-
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
