@@ -1,8 +1,8 @@
 " All plugins must be called between begin/end
 call plug#begin('~/.config/nvim/plugged')
 
-" File browser
-Plug 'scrooloose/nerdtree'
+" File explorer
+Plug 'kyazdani42/nvim-tree.lua'
 
 " Nice to haves
 Plug 'tpope/vim-commentary'
@@ -16,6 +16,7 @@ Plug 'airblade/vim-gitgutter'
 " Bling
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'hoob3rt/lualine.nvim'
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
 
 " Colorscheme
 Plug 'joshdick/onedark.vim'

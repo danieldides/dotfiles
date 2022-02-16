@@ -1,8 +1,7 @@
 " Set a map leader for more key combos
 let mapleader = ','
 
-nmap <silent> <leader>k :NERDTreeToggle<cr>
-nmap <silent> <leader>y :NERDTreeFind<cr>
+nmap <silent> <leader>k :NvimTreeToggle<CR>
 
 " Generate tags with <Leader>T
 " set statusline+=%{gutentags#statusline()}
