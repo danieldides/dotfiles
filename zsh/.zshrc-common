@@ -1,6 +1,8 @@
 alias ls='ls -G'
 alias vim="nvim"
 
+alias gist="gh gist create"
+
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
