@@ -66,4 +66,11 @@ alias whoseport="lsof -i -n -P | grep $1"
 
 export PATH="$(yarn global bin):$PATH"
 
+# Source files in .zshrc.d
+if [ -d ~/.zshrc.d ]; then
+  for file in ~/.zshrc.d/*.zsh ; do
+	  source $file
+  done
+fi
+
 # zprof
