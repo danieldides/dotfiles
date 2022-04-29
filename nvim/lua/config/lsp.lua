@@ -10,30 +10,32 @@ cmp.setup({
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.close(),
-        -- ['<CR>'] = cmp.mapping.confirm {
-        --     behavior = cmp.ConfirmBehavior.Replace,
-        --     select = true
-        -- },
-        ['<Tab>'] = function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            else
-                fallback()
-            end
-        end,
-        ['<S-Tab>'] = function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            else
-                fallback()
-            end
+        ['<CR>'] = cmp.mapping.confirm {
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true
+        }
+        -- ['<Tab>'] = function(fallback)
+        --     if cmp.visible() then
+        --         cmp.select_next_item()
+        --     else
+        --         fallback()
+        --     end
+        -- end,
+        -- ['<S-Tab>'] = function(fallback)
+        --     if cmp.visible() then
+        --         cmp.select_prev_item()
+        --     else
+        --         fallback()
+        --     end
+        -- end
+    },
+    snippet = {
+        expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body)
         end
     },
-    sources = {
-        {
-            name = 'nvim_lsp'
-        }
-    }
+    sources = cmp.config.sources({{name = 'nvim_lsp'}, {name = 'vsnip'}},
+                                 {{name = 'buffer'}})
 })
 
 local on_attach = function(client, bufnr)
@@ -46,10 +48,7 @@ local on_attach = function(client, bufnr)
     end
 
     -- Mappings.
-    local opts = {
-        noremap = true,
-        silent = true
-    }
+    local opts = {noremap = true, silent = true}
 
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -73,9 +72,7 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<space>e',
                    '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>',
                    opts)
-    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>',
-                   opts)
-    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>',
+    buf_set_keymap('n', '[]d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>',
                    opts)
     buf_set_keymap('n', '<space>q',
                    '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
@@ -92,16 +89,19 @@ local on_attach = function(client, bufnr)
 
 end
 
-local servers = {"pyright", "gopls", "tsserver", "clangd", "terraform-ls"}
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+local servers = {"pyright", "gopls", "tsserver", "clangd"}
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+-- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 for _, server in ipairs(servers) do
     nvim_lsp[server].setup {
         on_attach = on_attach,
-        flags = {
-            debounce_text_changes = 500
-        },
+        flags = {debounce_text_changes = 500},
         capabilities = capabilities
     }
 end
