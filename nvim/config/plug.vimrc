@@ -3,20 +3,19 @@ call plug#begin('~/.config/nvim/plugged')
 
 " File explorer
 Plug 'kyazdani42/nvim-tree.lua'
+Plug 'kyazdani42/nvim-web-devicons'
 
 " Nice to haves
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
 Plug 'folke/which-key.nvim'
 
 " VCS 
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+Plug 'lewis6991/gitsigns.nvim'
+
 
 " Bling
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'hoob3rt/lualine.nvim'
-Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Colorscheme
@@ -29,7 +28,8 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
-
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 
