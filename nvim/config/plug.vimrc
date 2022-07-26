@@ -31,7 +31,7 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'glepnir/lspsaga.nvim'
+Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 
 Plug 'mhartington/formatter.nvim'
 
