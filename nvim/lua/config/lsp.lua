@@ -86,8 +86,8 @@ local on_attach = function(client, bufnr)
                    opts)
     buf_set_keymap('n', '<space>q',
                    '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-    buf_set_keymap("n", "<leader>F", "<cmd>lua vim.lsp.buf.formatting()<CR>",
-                   opts)
+    -- buf_set_keymap("n", "<leader>F", "<cmd>lua vim.lsp.buf.formatting()<CR>",
+    --                opts)
 
     local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
 
