@@ -30,12 +30,19 @@ cmp.setup({
         -- end
     },
     snippet = {
-        expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
-        end
+        expand = function(args) vim.fn["vsnip#anonymous"](args.body) end
     },
-    sources = cmp.config.sources({{name = 'nvim_lsp'}, {name = 'vsnip'}},
-                                 {{name = 'buffer'}})
+    sources = cmp.config.sources({
+        {
+            name = 'nvim_lsp'
+        }, {
+            name = 'vsnip'
+        }
+    }, {
+        {
+            name = 'buffer'
+        }
+    })
 })
 
 local on_attach = function(client, bufnr)
@@ -48,7 +55,10 @@ local on_attach = function(client, bufnr)
     end
 
     -- Mappings.
-    local opts = {noremap = true, silent = true}
+    local opts = {
+        noremap = true,
+        silent = true
+    }
 
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -76,8 +86,8 @@ local on_attach = function(client, bufnr)
                    opts)
     buf_set_keymap('n', '<space>q',
                    '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>",
-                   opts)
+    -- buf_set_keymap("n", "<leader>F", "<cmd>lua vim.lsp.buf.formatting()<CR>",
+    --                opts)
 
     local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
 
@@ -89,19 +99,20 @@ local on_attach = function(client, bufnr)
 
 end
 
-local servers = {"pyright", "gopls", "tsserver", "clangd"}
+local servers = {"pyright", "gopls", "tsserver", "clangd", "sumneko_lua"}
 -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 -- capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-
--- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
--- capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp
+                                                                     .protocol
+                                                                     .make_client_capabilities())
 
 for _, server in ipairs(servers) do
     nvim_lsp[server].setup {
         on_attach = on_attach,
-        flags = {debounce_text_changes = 500},
+        flags = {
+            debounce_text_changes = 500
+        },
         capabilities = capabilities
     }
 end
