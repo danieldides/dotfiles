@@ -72,7 +72,7 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Formatter
-nnoremap <silent> <leader>F :Format<CR>
+" nnoremap <silent> <leader>F :Format<CR>
 
 " Find files using Telescope 
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
