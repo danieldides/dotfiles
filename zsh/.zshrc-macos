@@ -15,10 +15,6 @@ if type brew &>/dev/null; then
 	compinit
 fi
 
-KUBE_PS1_SYMBOL_ENABLE=false
-source "/opt/homebrew/opt/kube-ps1/share/kube-ps1.sh"
-PROMPT='$(kube_ps1)'$PROMPT
-
 # Check if 'kubectl' is a command in $PATH
 if [ $commands[kubectl] ]; then
   # Placeholder 'kubectl' shell function:
@@ -66,4 +62,9 @@ alias whoseport="lsof -i -n -P | grep $1"
 
 export PATH="$(yarn global bin):$PATH"
 
+export MG_DEPLOY_SOURCEGRAPH_MANAGED_PATH=/Users/daniel/Projects/work/deploy-sourcegraph-managed
+
 # zprof
+PROG=sg source /Users/daniel/.sourcegraph/sg.zsh_autocomplete
+
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
