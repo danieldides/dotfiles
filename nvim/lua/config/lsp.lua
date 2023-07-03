@@ -1,129 +1,76 @@
--- LSP 
-local nvim_lsp = require('lspconfig')
-
-local cmp = require 'cmp'
-cmp.setup({
-    mapping = {
-        ['<C-p>'] = cmp.mapping.select_prev_item(),
-        ['<C-n>'] = cmp.mapping.select_next_item(),
-        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.close(),
-        ['<CR>'] = cmp.mapping.confirm {
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true
-        }
-        -- ['<Tab>'] = function(fallback)
-        --     if cmp.visible() then
-        --         cmp.select_next_item()
-        --     else
-        --         fallback()
-        --     end
-        -- end,
-        -- ['<S-Tab>'] = function(fallback)
-        --     if cmp.visible() then
-        --         cmp.select_prev_item()
-        --     else
-        --         fallback()
-        --     end
-        -- end
-    },
-    snippet = {
-        expand = function(args) vim.fn["vsnip#anonymous"](args.body) end
-    },
-    sources = cmp.config.sources({
-        {
-            name = 'nvim_lsp'
-        }, {
-            name = 'vsnip'
-        }
-    }, {
-        {
-            name = 'buffer'
-        }
-    })
-})
-
-local on_attach = function(client, bufnr)
-
-    local function buf_set_keymap(...)
-        vim.api.nvim_buf_set_keymap(bufnr, ...)
-    end
-    local function buf_set_option(...)
-        vim.api.nvim_buf_set_option(bufnr, ...)
+-- [[ Configure LSP ]]
+--  This function gets run when an LSP connects to a particular buffer.
+local on_attach = function(_, bufnr)
+  -- NOTE: Remember that lua is a real programming language, and as such it is possible
+  -- to define small helper and utility functions so you don't have to repeat yourself
+  -- many times.
+  --
+  -- In this case, we create a function that lets us more easily define mappings specific
+  -- for LSP related items. It sets the mode, buffer and description for us each time.
+  local nmap = function(keys, func, desc)
+    if desc then
+      desc = 'LSP: ' .. desc
     end
 
-    -- Mappings.
-    local opts = {
-        noremap = true,
-        silent = true
-    }
+    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+  end
 
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    buf_set_keymap('n', '<space>wa',
-                   '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-    buf_set_keymap('n', '<space>wr',
-                   '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-    buf_set_keymap('n', '<space>wl',
-                   '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
-                   opts)
-    buf_set_keymap('n', '<space>D',
-                   '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>',
-                   opts)
-    buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_set_keymap('n', '<space>e',
-                   '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>',
-                   opts)
-    buf_set_keymap('n', '[]d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>',
-                   opts)
-    buf_set_keymap('n', '<space>q',
-                   '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-    -- buf_set_keymap("n", "<leader>F", "<cmd>lua vim.lsp.buf.formatting()<CR>",
-    --                opts)
+  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-    local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
+  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+  nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+  nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
-    if filetype == 'go' then
-        vim.cmd [[autocmd BufWritePre <buffer> :lua require("config.helpers").goimports(2000)]]
-        -- gopls requires a require to list workspace arguments.
-        vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>]]
-    end
+  -- See `:help K` for why this keymap
+  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
+  -- Lesser used LSP functionality
+  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+  nmap('<leader>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, '[W]orkspace [L]ist Folders')
+
+  -- Create a command `:Format` local to the LSP buffer
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+    vim.lsp.buf.format()
+  end, { desc = 'Format current buffer with LSP' })
 end
 
-local servers = {"pyright", "gopls", "tsserver", "clangd", "sumneko_lua"}
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+-- Enable the following language servers
+--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+--
+--  Add any additional override configuration in the following tables. They will be passed to
+--  the `settings` field of the server config. You must look up that documentation yourself.
+local servers = {
+  -- clangd = {},
+  -- gopls = {},
+  -- pyright = {},
+  -- rust_analyzer = {},
+  -- tsserver = {},
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-for _, server in ipairs(servers) do
-    nvim_lsp[server].setup {
-        on_attach = on_attach,
-        flags = {
-            debounce_text_changes = 500
-        },
-        capabilities = capabilities
-    }
-end
-
--- Arduino requires more configuration
-nvim_lsp.arduino_language_server.setup({
-    cmd = {
-        -- Required
-        "arduino-language-server", "-cli-config",
-        "/home/daniel/.arduino15/arduino-cli.yml"
+  lua_ls = {
+    Lua = {
+      workspace = { checkThirdParty = false },
+      telemetry = { enable = false },
     },
-    on_attach = on_attach
-})
+  },
+}
 
-local saga = require('lspsaga')
-saga.init_lsp_saga()
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+local lsp = {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  servers = servers,
+}
+
+return lsp
