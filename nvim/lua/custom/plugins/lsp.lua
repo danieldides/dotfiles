@@ -17,7 +17,6 @@ return {
       'folke/neodev.nvim',
     },
     config = function()
-      require "config.lsp"
       require "config.autoformat"
     end,
   },
