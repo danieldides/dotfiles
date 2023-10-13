@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import errno
 import os
 import pathlib
 
@@ -32,6 +33,10 @@ def main():
         {
             "source": dotfile_path("nvim"),
             "destination": config_path("nvim")
+        },
+        {
+            "source": dotfile_path("fish"),
+            "destination": config_path("fish"),
         },
     ]
 
