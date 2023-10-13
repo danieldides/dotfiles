@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 import os
+import pathlib
 
 
-home_dir = os.path.expanduser("~")
+config_dir = os.path.join(os.path.expanduser("~"), ".config")
 
 def create_symlink(source, destination):
     try:
@@ -15,21 +16,23 @@ def create_symlink(source, destination):
         else:
             raise
 
+def config_path(directory):
+    return os.path.join(config_dir, directory)
+
+def dotfile_path(directory):
+    return os.path.join(pathlib.Path(__file__).parent.resolve(), directory)
+
 def main():
+    if not os.path.exists(config_dir):
+        print(f"{config_dir} does not exist. Making it now.")
+        os.makedirs(config_dir)
+
     # Define a list of configurations and their corresponding destination paths
-
-    # config_path = os.path.join(home_dir, ".config", "your_application_name")
-
     configurations = [
         {
-            "source": "/path/to/git/repo/config1",
-            "destination": "/path/to/destination1/config1"
+            "source": dotfile_path("nvim"),
+            "destination": config_path("nvim")
         },
-        {
-            "source": "/path/to/git/repo/config2",
-            "destination": "/path/to/destination2/config2"
-        },
-        # Add more configurations as needed
     ]
 
     for config in configurations:
