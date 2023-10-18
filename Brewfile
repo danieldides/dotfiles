@@ -1,3 +1,5 @@
+tap "fluxcd/tap"
+
 brew "neovim", args: ["HEAD"]
 brew "fish"
 brew "pass"
@@ -13,5 +15,13 @@ brew "wget"
 brew "go"
 brew "awscli"
 brew "findutils"
+brew "kubectl"
+brew "k9s"
+brew "helm"
+brew "flux"
+brew "sops"
+brew "sshuttle"
 
 cask "visual-studio-code"
+vscode "golang.go"
+vscode "vscodevim.vim"
