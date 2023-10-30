@@ -12,7 +12,7 @@ def create_symlink(source, destination):
         os.symlink(source, destination)
         print(f"Created symlink: {destination} -> {source}")
     except OSError as e:
-        if e.errno == os.errno.EEXIST:
+        if e.errno == errno.EEXIST:
             print(f"Symlink already exists: {destination} -> {source}")
         else:
             raise
@@ -32,11 +32,15 @@ def main():
     configurations = [
         {
             "source": dotfile_path("nvim"),
-            "destination": config_path("nvim")
+            "destination": config_path("nvim"),
         },
         {
             "source": dotfile_path("fish"),
             "destination": config_path("fish"),
+        },
+        {
+            "source": dotfile_path("k9s"),
+            "destination": config_path("k9s"),
         },
     ]
 
