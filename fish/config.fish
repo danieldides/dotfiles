@@ -1,5 +1,6 @@
-source ~/.asdf/asdf.fish
-fish_add_path /opt/homebrew/bin
+# source ~/.asdf/asdf.fish
+# fish_add_path /opt/homebrew/bin
+fish_add_path /usr/local/Cellar/
 
 # Alias
 alias k=kubectl
@@ -17,18 +18,19 @@ alias vim="nvim"
 
 alias gist="gh gist create"
 
+alias sed=gsed
+
 set -gx VISUAL nvim
 set -gx EDITOR "$VISUAL"
 set -gx KUBECTL_EXTERNAL_DIFF "dyff between --omit-header --set-exit-code"
+set -gx PATH $PATH $HOME/.krew/bin
 
 set -gx GOPATH $HOME/go
 set -gx GOBIN $HOME/go/bin
+
 
 fish_add_path -m $GOBIN
 
 fish_add_path /Users/daniel/.local/bin
 
-# set -gx PATH $PATH $HOME/.krew/bin
-fish_add_path /Users/daniel/.krew/bin
-
-source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc"
+# source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc"
