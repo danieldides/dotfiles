@@ -58,7 +58,7 @@ local servers = {
       },
     },
   },
-  -- pyright = {},
+  pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
 
@@ -68,6 +68,7 @@ local servers = {
       telemetry = { enable = false },
     },
   },
+  helm_ls = {},
 }
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
