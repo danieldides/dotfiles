@@ -7,9 +7,13 @@ import pathlib
 
 config_dir = os.path.join(os.path.expanduser("~"), ".config")
 
-# https://gist.github.com/gagarine/cf3f65f9be6aa0e105b184376f765262
+# TODO https://gist.github.com/gagarine/cf3f65f9be6aa0e105b184376f765262
 def chsh():
-	pass
+    pass
+
+# TODO
+def set_global_gitignore():
+    pass
 
 def create_symlink(source, destination):
     try:
