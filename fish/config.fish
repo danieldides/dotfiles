@@ -1,6 +1,5 @@
 # source ~/.asdf/asdf.fish
-# fish_add_path /opt/homebrew/bin
-fish_add_path /usr/local/Cellar/
+fish_add_path /opt/homebrew/bin
 
 # Alias
 alias k=kubectl
@@ -30,7 +29,5 @@ set -gx GOBIN $HOME/go/bin
 
 
 fish_add_path -m $GOBIN
-
 fish_add_path /Users/daniel/.local/bin
-
 # source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc"

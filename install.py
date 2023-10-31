@@ -7,6 +7,10 @@ import pathlib
 
 config_dir = os.path.join(os.path.expanduser("~"), ".config")
 
+# https://gist.github.com/gagarine/cf3f65f9be6aa0e105b184376f765262
+def chsh():
+	pass
+
 def create_symlink(source, destination):
     try:
         os.symlink(source, destination)
