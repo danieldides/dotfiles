@@ -1,3 +1,5 @@
+tap "fluxcd/tap"
+
 brew "neovim", args: ["HEAD"]
 brew "fish"
 brew "pass"
@@ -24,7 +26,13 @@ brew "node"
 brew "fluxcd/tap/flux"
 brew "vcluster"
 brew "openssl"
+brew "docker"
 
 cask "visual-studio-code"
+cask "mattermost"
+cask "rectangle"
+cask "slack"
+# cask "docker"
+
 vscode "golang.go"
 vscode "vscodevim.vim"
