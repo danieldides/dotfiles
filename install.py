@@ -8,12 +8,23 @@ import pathlib
 config_dir = os.path.join(os.path.expanduser("~"), ".config")
 
 # TODO https://gist.github.com/gagarine/cf3f65f9be6aa0e105b184376f765262
+# Install Fisher: https://github.com/jorgebucaran/fisher
 def chsh():
     pass
 
 # TODO
 def set_global_gitignore():
     pass
+
+# TODO
+def install_krew_plugins():
+    plugins = [
+        "ctx",
+        "ns",
+        "view-secret",
+    ]
+    # kubeclt krew install $plugin
+
 
 def create_symlink(source, destination):
     try:
