@@ -127,17 +127,6 @@ require('lazy').setup({
     },
     opts = {
       on_attach = function(bufnr)
-        local api = require "nvim-tree.api"
-
-        local function opts(desc)
-          return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-        end
-
-        -- default mappings
-        api.config.mappings.default_on_attach(bufnr)
-
-        -- custom mappings
-        vim.keymap.set('n', '<leader>k', api.tree.toggle(), opts({ find_file = true, focus = true, path = "<arg>" }))
       end
     },
     config = function()
@@ -219,6 +208,7 @@ vim.keymap.set('n', '<leader>p', vim.diagnostic.goto_prev, { desc = 'Go to previ
 vim.keymap.set('n', '<leader>n', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+vim.keymap.set("n", "<leader>k", ":NvimTreeFindFileToggle<CR>", { noremap = true, silent = true })
 
 -- Setup neovim lua configuration
 require('neodev').setup()

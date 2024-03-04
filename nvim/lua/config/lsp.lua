@@ -69,6 +69,7 @@ local servers = {
     },
   },
   helm_ls = {},
+  bashls = {},
 }
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
