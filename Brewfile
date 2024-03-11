@@ -1,4 +1,5 @@
 tap "fluxcd/tap"
+tap "homeport/tap"
 
 brew "neovim", args: ["HEAD"]
 brew "fish"
@@ -32,6 +33,7 @@ brew "velero"
 brew "bash"
 brew "awk"
 brew "marked"
+brew "dyff"
 
 cask "visual-studio-code"
 cask "mattermost"
