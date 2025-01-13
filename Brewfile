@@ -48,6 +48,7 @@ cask "postman"
 cask "raycast"
 cask "diffmerge"
 cask "meld"
+cask "discord"
 
 vscode "golang.go"
 vscode "vscodevim.vim"
