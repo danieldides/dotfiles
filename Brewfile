@@ -38,6 +38,7 @@ brew "dyff"
 brew "hyperfine"
 brew "mas"
 brew "htop"
+brew "ollama"
 
 cask "visual-studio-code"
 cask "mattermost"
