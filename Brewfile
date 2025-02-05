@@ -1,6 +1,8 @@
 tap "fluxcd/tap"
 tap "homeport/tap"
+tap "oven-sh/bun"
 
+brew "tree-sitter", args: ["HEAD"]
 brew "neovim", args: ["HEAD"]
 brew "fish"
 brew "pass"
@@ -42,6 +44,7 @@ brew "ollama"
 brew "pipx"
 brew "nvm"
 brew "hadolint"
+brew "bun"
 
 cask "visual-studio-code"
 cask "mattermost"
@@ -52,7 +55,7 @@ cask "postman"
 cask "raycast"
 cask "diffmerge"
 cask "meld"
-cask "discord"
+# cask "discord"
 cask "ghostty"
 
 vscode "golang.go"
