@@ -7,14 +7,11 @@ import pathlib
 
 config_dir = os.path.join(os.path.expanduser("~"), ".config")
 
-# TODO https://gist.github.com/gagarine/cf3f65f9be6aa0e105b184376f765262
-# Install Fisher: https://github.com/jorgebucaran/fisher
-def chsh():
-    pass
 
 # TODO
 def set_global_gitignore():
     pass
+
 
 # TODO
 def install_krew_plugins():
@@ -36,11 +33,14 @@ def create_symlink(source, destination):
         else:
             raise
 
+
 def config_path(directory):
     return os.path.join(config_dir, directory)
 
+
 def dotfile_path(directory):
     return os.path.join(pathlib.Path(__file__).parent.resolve(), directory)
+
 
 def main():
     if not os.path.exists(config_dir):
@@ -61,11 +61,15 @@ def main():
             "source": dotfile_path("k9s"),
             "destination": config_path("k9s"),
         },
+        {
+            "source": dotfile_path("ghostty"),
+            "destination": config_path("ghostty"),
+        },
     ]
 
     for config in configurations:
         create_symlink(config["source"], config["destination"])
 
+
 if __name__ == "__main__":
     main()
-
