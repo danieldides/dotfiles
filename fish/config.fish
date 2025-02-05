@@ -19,6 +19,9 @@ alias gist="gh gist create"
 
 alias sed=gsed
 
+# Fix pyenv
+alias brew="env PATH=(string replace (pyenv root)/shims '' \"\$PATH\") brew"
+
 set -gx VISUAL nvim
 set -gx EDITOR "$VISUAL"
 set -gx KUBECTL_EXTERNAL_DIFF "dyff between --omit-header --set-exit-code"
@@ -27,7 +30,17 @@ set -gx PATH $PATH $HOME/.krew/bin
 set -gx GOPATH $HOME/go
 set -gx GOBIN $HOME/go/bin
 
+set -x GPG_TTY (tty)
 
 fish_add_path -m $GOBIN
 fish_add_path /Users/daniel/.local/bin
 # source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc"
+#
+pyenv init - fish | source
+
+function open-webui
+    if test -z "$VIRTUAL_ENV"
+        pyenv activate open-webui-env
+    end
+    command open-webui
+end
