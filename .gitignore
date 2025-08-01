@@ -1,2 +1,4 @@
 nvim/plugged/
 .zshrc-secret
+
+.DS_Store
