@@ -45,6 +45,8 @@ brew "pipx"
 brew "nvm"
 brew "hadolint"
 brew "bun"
+brew "pyenv"
+brew "flyctl"
 
 cask "visual-studio-code"
 cask "mattermost"
