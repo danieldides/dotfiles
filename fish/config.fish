@@ -35,7 +35,7 @@ set -x GPG_TTY (tty)
 fish_add_path -m $GOBIN
 fish_add_path /Users/daniel/.local/bin
 # source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc"
-#
+
 pyenv init - fish | source
 
 function open-webui
@@ -44,3 +44,8 @@ function open-webui
     end
     command open-webui
 end
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/daniel/.lmstudio/bin
+# End of LM Studio CLI section
+
