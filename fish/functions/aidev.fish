@@ -1,3 +1,3 @@
 function aidev
-    node /Users/danieldides/Projects/efritz/aidev/dist/cli.js $argv
+    bun --cwd ~/Projects/efritz/aidev dev --cwd "$PWD" $argv
 end

@@ -34,18 +34,13 @@ set -x GPG_TTY (tty)
 
 fish_add_path -m $GOBIN
 fish_add_path /Users/daniel/.local/bin
-# source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc"
 
-pyenv init - fish | source
+fish_add_path ~/.local/bin
 
-function open-webui
-    if test -z "$VIRTUAL_ENV"
-        pyenv activate open-webui-env
-    end
-    command open-webui
+set -gx PATH $PATH ~/.lmstudio/bin
+
+if test -f (dirname (status --current-filename))/secret.fish
+    source (dirname (status --current-filename))/secret.fish
 end
 
-# Added by LM Studio CLI (lms)
 set -gx PATH $PATH /Users/daniel/.lmstudio/bin
-# End of LM Studio CLI section
-
