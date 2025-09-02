@@ -1,4 +1,5 @@
-theme = OneHalfLight
+# theme = OneHalfDark
+# theme = OneHalfLight
 font-size = 16
 cursor-opacity = 1
 cursor-style = block
