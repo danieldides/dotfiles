@@ -1,6 +1,7 @@
 tap "fluxcd/tap"
 tap "homeport/tap"
 tap "oven-sh/bun"
+tap "macropower/tap"
 
 brew "tree-sitter", args: ["HEAD"]
 brew "neovim", args: ["HEAD"]
@@ -59,6 +60,7 @@ cask "raycast"
 cask "diffmerge"
 # cask "discord"
 cask "ghostty"
+cask "kat"
 
 vscode "golang.go"
 vscode "vscodevim.vim"

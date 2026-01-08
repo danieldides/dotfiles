@@ -62,12 +62,13 @@ require('lazy').setup({
 
   {
     -- Theme inspired by Atom
-    -- 'navarasu/onedark.nvim',
-    'joshdick/onedark.vim',
+    'navarasu/onedark.nvim',
     priority = 1000,
     config = function()
+      require('onedark').setup {
+        style = 'light',
+      }
       vim.cmd.colorscheme 'onedark'
-      vim.o.background = "light"
     end,
   },
 
@@ -185,7 +186,7 @@ vim.o.maxmempattern = 500000
 vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
-vim.o.termguicolors = false
+vim.o.termguicolors = true
 
 vim.o.tabstop = 4
 
