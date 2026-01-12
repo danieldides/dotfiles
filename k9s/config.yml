@@ -1,0 +1,4 @@
+k9s:
+  noExitOnCtrlC: true
+  logger:
+    textWrap: true

@@ -1,0 +1,52 @@
+! URxvt ---------------------------------------------------------------------
+
+URxvt*scrollBar: false
+URxvt*font: xft:Consolas:size=8, xft:Inconsolata for Powerline
+*geometry: 75x24
+xterm*termName: URxvt-256color
+
+URxvt*loginShell: true
+URxvt.internalBorder: 6
+
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+URxvt.iso14755: False
+URxvt.perl-ext-common: default,clipboard
+URxvt.depth: 32
+URxvt.allowBold: true
+
+! Infinality patch ------------------------------------------------------------
+Xft.autohint:	0
+Xft.lcdfilter:	lcddefault
+Xft.hintstyle:	hintfull
+Xft.hinting:	1
+Xft.antialias:	1
+Xfg.rgba:		rgb
+
+! dzen2 config
+dzen2.font: System\ San\ Francisco\ Display\ Regular:pixelsize=10
+
+
+! 0ne Dark
+! from: 
+
+URxvt*color0:		#000000
+URxvt*color8:   	#5C6370
+URxvt*color1:   	#E06C75
+URxvt*color9:   	#E06C75
+URxvt*color2:   	#98C379
+URxvt*color10:  	#98C379
+URxvt*color3:   	#D19A66
+URxvt*color11:  	#D19A66
+URxvt*color4:   	#61AFEF
+URxvt*color12:  	#61AFEF
+URxvt*color5:   	#C678DD
+URxvt*color13:  	#C678DD
+URxvt*color6:   	#56B6C2
+URxvt*color14:  	#56B6C2
+URxvt*color7:   	#ABB2BF
+URxvt*color15:  	#FFFFFF
+URxvt*foreground:  	#FFFFFF
+! Bold Text:      #ABB2BF
+! Selection:      #3A3F4B
+! Cursor:         #5C6370
+URxvt*background:   #1E2127

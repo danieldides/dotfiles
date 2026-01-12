@@ -1,0 +1,70 @@
+# zmodload zsh/zprof
+
+source ~/Projects/personal/dotfiles/zsh/.zshrc-common
+source ~/Projects/personal/dotfiles/zsh/.zshrc-secret
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+. $HOME/.asdf/asdf.sh
+
+# Process completions
+if type brew &>/dev/null; then
+	FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+	autoload -Uz compinit
+	compinit
+fi
+
+# Check if 'kubectl' is a command in $PATH
+if [ $commands[kubectl] ]; then
+  # Placeholder 'kubectl' shell function:
+  # Will only be executed on the first call to 'kubectl'
+  kubectl() {
+
+    # Remove this function, subsequent calls will execute 'kubectl' directly
+    unfunction "$0"
+
+    # Load auto-completion
+    source <(kubectl completion zsh)
+
+    # Execute 'kubectl' binary
+    $0 "$@"
+  }
+fi
+
+# Check if 'gcloud' is a command in $PATH
+if [ $commands[gcloud] ]; then
+  # Placeholder 'gcloud' shell function:
+  # Will only be executed on the first call to 'gcloud'
+  gcloud() {
+    # Remove this function, subsequent calls will execute 'gcloud' directly
+    unfunction "$0"
+    # Load auto-completion
+	source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+    # Execute 'gcloud' binary
+    $0 "$@"
+  }
+fi
+
+alias k=kubectl
+alias ns="kubectl ns"
+alias ctx="kubectl ctx"
+
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+eval "$(direnv hook zsh)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+alias tf="terraform"
+alias asdf-add-plugin="cut -d' ' -f1 .tool-versions|xargs -I P asdf plugin add \"P\""
+alias whoseport="lsof -i -n -P | grep $1"
+
+export PATH="$(yarn global bin):$PATH"
+
+export MG_DEPLOY_SOURCEGRAPH_MANAGED_PATH=/Users/daniel/Projects/work/deploy-sourcegraph-managed
+
+# zprof
+PROG=sg source /Users/daniel/.sourcegraph/sg.zsh_autocomplete
+
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
