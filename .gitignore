@@ -1,0 +1,8 @@
+nvim/plugged/
+.zshrc-secret
+<<<<<<< Updated upstream
+
+.DS_Store
+=======
+fish/secret.fish
+>>>>>>> Stashed changes

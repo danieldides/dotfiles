@@ -1,0 +1,16 @@
+alias ls='ls -G'
+alias vim="nvim"
+
+alias gist="gh gist create"
+
+export VISUAL=nvim
+export EDITOR="$VISUAL"
+
+export GOPATH=$HOME/go
+export GOBIN=$HOME/go/bin
+export PATH=$GOBIN:$PATH
+
+export PATH=$PATH:/home/daniel/.local/bin
+
+# ZSH stuff
+source ~/Projects/external/zsh-z/zsh-z.plugin.zsh
