@@ -52,6 +52,7 @@ brew "go-task"
 brew "gdu"
 brew "lazygit"
 brew "bottom"
+brew "gh"
 
 cask "visual-studio-code"
 cask "mattermost"
