@@ -3,8 +3,8 @@
 -- Add any additional options here
 
 -- Leader key: keep ',' as specified
-vim.g.mapleader = ','
-vim.g.maplocalleader = ','
+vim.g.mapleader = ","
+vim.g.maplocalleader = ","
 
 -- Custom options from your current config
 vim.o.tabstop = 4
@@ -15,3 +15,7 @@ vim.opt.relativenumber = false
 
 -- Show all characters including backticks in markdown
 vim.opt.conceallevel = 0
+
+-- Disable automatically copying to Mac system clipboard
+vim.opt.clipboard = ""
+
