@@ -1,8 +1,12 @@
 nvim/plugged/
 .zshrc-secret
-<<<<<<< Updated upstream
-
 .DS_Store
-=======
 fish/secret.fish
->>>>>>> Stashed changes
+fish/fish_variables
+fish/conf.d/fish_frozen_*.fish
+fish/fisher.fish
+fish/functions/__z*.fish
+fish/functions/_nvm*.fish
+fish/functions/nvm.fish
+fish/conf.d/z.fish
+fish/conf.d/nvm.fish
