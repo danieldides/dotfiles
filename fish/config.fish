@@ -1,4 +1,3 @@
-# source ~/.asdf/asdf.fish
 fish_add_path /opt/homebrew/bin
 
 # Alias
@@ -25,22 +24,18 @@ alias brew="env PATH=(string replace (pyenv root)/shims '' \"\$PATH\") brew"
 set -gx VISUAL nvim
 set -gx EDITOR "$VISUAL"
 set -gx KUBECTL_EXTERNAL_DIFF "dyff between --omit-header --set-exit-code"
-set -gx PATH $PATH $HOME/.krew/bin
 
 set -gx GOPATH $HOME/go
 set -gx GOBIN $HOME/go/bin
 
+fish_add_path -m $GOBIN
+
 set -x GPG_TTY (tty)
 
-fish_add_path -m $GOBIN
-fish_add_path /Users/daniel/.local/bin
-
-fish_add_path ~/.local/bin
-
-set -gx PATH $PATH ~/.lmstudio/bin
-
+# Load system-specific configuration (create secret.fish from secret.example.fish)
 if test -f (dirname (status --current-filename))/secret.fish
     source (dirname (status --current-filename))/secret.fish
 end
 
-set -gx PATH $PATH /Users/daniel/.lmstudio/bin
+# kubectl krew (loaded after secret to respect KUBECONFIG if set)
+fish_add_path $HOME/.krew/bin

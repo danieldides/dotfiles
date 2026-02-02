@@ -49,6 +49,7 @@ brew "bun"
 brew "flyctl"
 brew "uv"
 brew "go-task"
+brew "terragrunt"
 
 cask "visual-studio-code"
 cask "mattermost"
