@@ -4,6 +4,8 @@ fish_add_path /opt/homebrew/bin
 alias k=kubectl
 alias ns="kubectl ns"
 alias ctx="kubectl ctx"
+alias kubectx="kubie ctx"
+alias kubens="kubie ns"
 
 alias tf="terraform"
 alias asdf-add-plugin="cut -d' ' -f1 .tool-versions|xargs -I P asdf plugin add \"P\""

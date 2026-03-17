@@ -59,4 +59,22 @@ return {
     ft = { "go", 'gomod' },
     build = ':lua require("go.install").update_all_sync()'
   },
+
+  -- Disable mini.pairs to stop automatic insertion of closing quotes/brackets
+  {
+    "nvim-mini/mini.pairs",
+    enabled = false,
+  },
+
+
+
+  -- Disable markdown plugins that cause crashes
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    enabled = false,
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    enabled = false,
+  },
 }
