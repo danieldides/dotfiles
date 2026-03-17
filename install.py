@@ -24,6 +24,10 @@ def install_krew_plugins():
 
 
 def create_symlink(source, destination):
+    parent_dir = os.path.dirname(destination)
+    if parent_dir and not os.path.exists(parent_dir):
+        os.makedirs(parent_dir, exist_ok=True)
+
     try:
         os.symlink(source, destination)
         print(f"Created symlink: {destination} -> {source}")
@@ -64,6 +68,10 @@ def main():
         {
             "source": dotfile_path("ghostty"),
             "destination": config_path("ghostty"),
+        },
+        {
+            "source": dotfile_path("opencode/skills"),
+            "destination": config_path("opencode/skills"),
         },
     ]
 

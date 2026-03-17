@@ -19,8 +19,8 @@ vim.opt.conceallevel = 0
 -- Disable automatically copying to Mac system clipboard
 vim.opt.clipboard = ""
 
--- Enable line wrapping
+-- Enable word-wrapping
 vim.opt.wrap = true
-vim.opt.linebreak = true -- Break lines at word boundaries
-vim.opt.breakindent = true -- Preserve indentation in wrapped text
+vim.opt.linebreak = true -- Wrap at word boundaries
+vim.opt.breakindent = true -- Preserve indentation in wrapped lines
 

@@ -36,7 +36,7 @@ Components:
    - AWS profile
    - System-specific paths
    - API keys and tokens (NEVER commit these)
-   - PYENV_ROOT if different from default
+   - PYENV_ROOT and PATH if using pyenv (see `secret.example.fish` for example)
 
 4. Install Fisher (package manager):
    ```bash
@@ -80,3 +80,9 @@ fisher list > fish/fish_plugins
 - **Committed custom functions**: `fish/functions/aidev.fish`, `fish/functions/helm-readme.fish`, `fish/functions/whoseport.fish`
 - **Ignored plugin functions**: All Fisher plugin files (`fisher.fish`, `__z*.fish`, `_nvm*.fish`, `nvm.fish`, `z.fish`, `nvm.fish` in conf.d/) are generated from `fish/fish_plugins` and should not be committed
 - Color themes and key bindings are system-specific; customize them using `fish_config` or by editing `~/.config/fish/conf.d/` files
+- **Pyenv and Brew**: The brew alias automatically removes pyenv shims from PATH to avoid conflicts. If you're not using pyenv, the alias will still work without issues
+
+## OpenCode
+
+- `install.py` symlinks `opencode/skills` to `~/.config/opencode/skills`
+- Add OpenCode skills as `opencode/skills/<name>/SKILL.md`
