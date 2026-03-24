@@ -10,3 +10,4 @@ fish/functions/_nvm*.fish
 fish/functions/nvm.fish
 fish/conf.d/z.fish
 fish/conf.d/nvm.fish
+k9s/clusters

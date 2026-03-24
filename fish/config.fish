@@ -10,7 +10,6 @@ alias kubens="kubie ns"
 alias tf="terraform"
 alias asdf-add-plugin="cut -d' ' -f1 .tool-versions|xargs -I P asdf plugin add \"P\""
 alias whoseport="lsof -i -n -P | grep $1"
-
 alias docker-stop-all="docker stop (docker ps -a -1)"
 
 alias ls='ls -G'
@@ -29,6 +28,18 @@ set -gx KUBECTL_EXTERNAL_DIFF "dyff between --omit-header --set-exit-code"
 
 set -gx GOPATH $HOME/go
 set -gx GOBIN $HOME/go/bin
+
+set -gx XDG_CONFIG_HOME $HOME/.config
+
+if type -q k9s
+    if not set -q K9S_CONFIG_DIR
+        if set -q XDG_CONFIG_HOME
+            set -gx K9S_CONFIG_DIR "$XDG_CONFIG_HOME/k9s"
+        else
+            set -gx K9S_CONFIG_DIR "$HOME/.config/k9s"
+        end
+    end
+end
 
 fish_add_path -m $GOBIN
 
