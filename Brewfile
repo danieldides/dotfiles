@@ -52,6 +52,9 @@ brew "nmap"
 brew "glab"
 brew "kubie"
 brew "pre-commit"
+brew "azure-cli"
+brew "podman"
+
 
 cask "visual-studio-code"
 cask "mattermost"
