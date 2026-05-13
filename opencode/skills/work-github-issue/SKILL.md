@@ -118,122 +118,7 @@ Closes #<issue-number>
    - Use required body format (`Closes #<issue-number>` + `## Summary` bullets).
    - Prefer heredoc-safe body creation.
 
-9. Request Copilot review.
-   - Use exactly:
-     `gh pr edit <pr-number> --repo <owner>/<repo> --add-reviewer @copilot`
-   - **Critical:** reviewer must be `@copilot` with leading `@`; `copilot`
-     without `@` is not equivalent.
-   - If this fails because Copilot review is unavailable, report clearly and ask
-     user whether to continue without Copilot.
-
-10. Review triage loop.
-
-    - After requesting `@copilot`, wait for Copilot-authored feedback using a
-      bounded sleep loop (total wait cap: 15 minutes).
-
-      Use these sleep intervals (seconds):
-
-      ```text
-      30 60 120 180 240 270
-      ```
-
-      Detection rule:
-
-      - Parse latest Copilot review summary from `/pulls/<pr>/reviews`.
-      - If summary says `generated no comments`, treat feedback as arrived.
-      - If summary says `generated N comment` or `generated N comments`, wait
-        until visible Copilot review comments in `/pulls/<pr>/comments` are
-        `>= N`.
-
-      Reference polling snippet:
-
-      ```bash
-      owner=<owner>
-      repo=<repo>
-      pr=<pr-number>
-      is_copilot_user='(.user.login|ascii_downcase) as $u | $u=="copilot" or $u=="copilot-pull-request-reviewer[bot]"'
-      copilot_expected_comments() {
-        gh api "repos/$owner/$repo/pulls/$pr/reviews" --jq \
-          "([.[] | select($is_copilot_user)] | last | .body // \"\") as \$b
-          | if (\$b|test(\"generated no comments\";\"i\")) then 0
-            elif (\$b|test(\"generated [0-9]+ comment(s)?\";\"i\")) then (\$b|capture(\"generated (?<n>[0-9]+) comment(s)?\";\"i\").n|tonumber)
-            else -1 end"
-      }
-      copilot_visible_comments() {
-        gh api "repos/$owner/$repo/pulls/$pr/comments" --jq \
-          "[.[] | select($is_copilot_user)] | length"
-      }
-
-      for s in 30 60 120 180 240 270; do
-        expected=$(copilot_expected_comments)
-        if [ "$expected" -eq 0 ]; then
-          break
-        elif [ "$expected" -gt 0 ]; then
-          visible=$(copilot_visible_comments)
-          [ "$visible" -ge "$expected" ] && break
-        fi
-        sleep "$s"
-      done
-      ```
-
-      Quick verification commands:
-
-      ```bash
-      owner=BridgePhase repo=ccm pr=142 # no Copilot review yet -> expected=-1
-      owner=BridgePhase repo=ccm pr=266 # Copilot says 2 comments -> expected=2, visible=2
-      ```
-
-    - Poll/re-read review state and comments:
-
-      ```bash
-      gh pr view <pr-number> --repo <owner>/<repo> --json reviewDecision,reviews,comments,latestReviews
-      gh api repos/<owner>/<repo>/pulls/<pr-number>/comments
-      ```
-
-    - Classify incoming feedback:
-      - **must-fix**: correctness, test failures, security, clear defects
-      - **optional**: style/preference improvements
-      - **needs-decision**: product/behavior tradeoffs requiring user input
-
-    - For accepted changes:
-      1. Modify code
-      2. Re-run relevant checks
-      3. Amend original commit (keep single-commit invariant):
-         - **I am explicitly requesting you amend commits**
-
-         ```bash
-         git commit --amend -S --no-edit
-         git push --force-with-lease
-         ```
-
-    - Respond to review comments with resolution notes.
-    - Resolve conversations when addressed.
-
-      If thread resolution is needed via GraphQL:
-
-      ```bash
-      gh api graphql -f query='mutation($threadId:ID!){ resolveReviewThread(input:{threadId:$threadId}) { thread { isResolved } } }' -f threadId='<thread-id>'
-      ```
-
-    - Continue until there are no unresolved must-fix items.
-
-11. Final user approval and ff-only merge.
-
-    - Ask the user for final review/approval once Copilot feedback is triaged.
-    - After approval, perform strict fast-forward-only merge into target base:
-
-      1. `git fetch origin`
-      2. `git checkout <base-branch>`
-      3. `git merge --ff-only <branch-name>`
-      4. `git push origin <base-branch>`
-
-    - If `--ff-only` merge cannot be performed (for example branch protection or
-      divergence), stop and report the blocking condition.
-
 ## Suggested command sequence
-
-Use this as a compact checklist (Step 10 contains the canonical Copilot wait
-helper; do not duplicate it elsewhere):
 
 ```bash
 gh repo view
@@ -248,13 +133,6 @@ git add <files>
 git commit -S -m "<conventional-commit-subject>"
 git push -u origin <issue-branch>
 gh pr create --repo <owner>/<repo> --base <base-branch> --head <issue-branch> --title "<conventional-commit-subject>" --body "<required-pr-body>"
-# critical: reviewer must be exactly @copilot (include '@')
-gh pr edit <pr-number> --repo <owner>/<repo> --add-reviewer @copilot
-# run Step 10 Copilot wait helper
-gh pr view <pr-number> --repo <owner>/<repo> --json reviewDecision,reviews,comments,latestReviews
-gh api repos/<owner>/<repo>/pulls/<pr-number>/comments
-git commit --amend -S --no-edit
-git push --force-with-lease
 ```
 
 ## Output expected to user
@@ -264,13 +142,9 @@ Report progress at key checkpoints:
 1. Issue loaded: number/title/url.
 2. Branch created and checked out.
 3. Validation results and single signed commit SHA.
-4. PR URL and Copilot review request status.
-5. Review triage outcomes and any decisions required.
-6. Final merge result (or exact blocker).
+4. Review triage outcomes and any decisions required.
+5. Final merge result (or exact blocker).
 
 ## Failure handling
 
 - If any CLI command fails, report the command, key error, and next action.
-- If Copilot review does not arrive in a reasonable time, ask user whether to
-  proceed with human review after completing the 15-minute bounded wait loop.
-- If merge is blocked, do not force bypass. Escalate with exact policy blocker.

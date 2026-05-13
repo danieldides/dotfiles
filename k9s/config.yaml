@@ -1,3 +1,7 @@
 k9s:
   ui:
-    headless: true
+    headless: false
+  noExitOnCtrlC: true
+  logger:
+    textWrap: true
+
