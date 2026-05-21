@@ -11,3 +11,5 @@ fish/functions/nvm.fish
 fish/conf.d/z.fish
 fish/conf.d/nvm.fish
 k9s/clusters
+k9s/screen-dumps/
+opencode/.ocx/

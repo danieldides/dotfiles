@@ -2,5 +2,4 @@
 
 This directory stores global OpenCode configuration managed by these dotfiles.
 
-- `skills/` is symlinked to `~/.config/opencode/skills` by `install.py`
-- Add one directory per skill with a `SKILL.md` file inside
+AI skills are intentionally managed outside of OpenCode configuration under `aidev/skills` and installed to `~/.agents/skills`.
