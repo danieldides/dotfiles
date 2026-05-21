@@ -70,8 +70,8 @@ def main():
             "destination": config_path("ghostty"),
         },
         {
-            "source": dotfile_path("opencode/skills"),
-            "destination": config_path("opencode/skills"),
+            "source": dotfile_path("aidev/skills"),
+            "destination": os.path.join(os.path.expanduser("~"), ".agents", "skills"),
         },
     ]
 

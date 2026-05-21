@@ -1,5 +1,13 @@
 fish_add_path /opt/homebrew/bin
 
+# Podman-backed Docker on macOS
+# `podman machine start` exposes the Docker-compatible API at /var/run/docker.sock.
+if test (uname) = Darwin; and type -q podman
+    set -gx DOCKER_HOST unix:///var/run/docker.sock
+    set -gx DOCKER_CONTEXT default
+    set -gx TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE /var/run/docker.sock
+end
+
 # Alias
 alias k=kubectl
 alias ns="kubectl ns"
