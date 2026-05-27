@@ -36,14 +36,6 @@ return {
   -- Use LazyVim's recommended neo-tree (already enabled by default)
   -- No need to explicitly configure neo-tree as LazyVim handles it
 
-  -- Supermaven (AI assistant)
-  {
-    "supermaven-inc/supermaven-nvim",
-    config = function()
-      require("supermaven-nvim").setup({})
-    end,
-  },
-
   -- Go.nvim for Go development
   {
     "ray-x/go.nvim",
