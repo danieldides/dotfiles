@@ -61,7 +61,8 @@ end
 # kubectl krew (loaded after secret to respect KUBECONFIG if set)
 fish_add_path $HOME/.krew/bin
 
-# mise (loaded last so shims take precedence over Homebrew tools)
+# mise (loaded last so project tools take precedence over Homebrew tools)
 if type -q mise
     mise activate fish | source
+    mise env -s fish | source
 end
