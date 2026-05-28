@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@opencode-ai/plugin": "1.14.48"
+    "@opencode-ai/plugin": "1.14.48",
+    "detect-terminal": "^3.0.0",
+    "node-notifier": "^10.0.1"
   },
   "devDependencies": {
     "unique-names-generator": "4.7.1"

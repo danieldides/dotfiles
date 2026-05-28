@@ -84,5 +84,5 @@ fisher list > fish/fish_plugins
 
 ## AI Skills
 
-- `install.py` symlinks `aidev/skills` to `~/.agents/skills`
-- Add agent-agnostic AI skills as `aidev/skills/<name>/SKILL.md`
+- `install.py` symlinks `agents/skills` to `~/.agents/skills`
+- Add agent-agnostic AI skills as `agents/skills/<name>/SKILL.md`

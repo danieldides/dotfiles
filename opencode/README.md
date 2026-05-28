@@ -2,4 +2,4 @@
 
 This directory stores global OpenCode configuration managed by these dotfiles.
 
-AI skills are intentionally managed outside of OpenCode configuration under `aidev/skills` and installed to `~/.agents/skills`.
+AI skills are intentionally managed outside of OpenCode configuration under `agents/skills` and installed to `~/.agents/skills`.
