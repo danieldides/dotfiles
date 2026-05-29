@@ -55,6 +55,7 @@ brew "kubie"
 brew "pre-commit"
 brew "azure-cli"
 brew "podman"
+brew "platformio"
 
 
 cask "visual-studio-code"
