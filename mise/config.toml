@@ -12,6 +12,10 @@ lockfile = true
 # Prefer bun for npm-backed global CLIs once bun is installed by mise.
 package_manager = "bun"
 
+[env]
+# azure-cli depends on beta Azure Python packages; uv must consider prereleases.
+UV_PRERELEASE = "allow"
+
 [shell_alias]
 # Keep an easy escape hatch for Helm 3 while Helm 4 is the default.
 helm3 = "mise x helm@3 -- helm"
