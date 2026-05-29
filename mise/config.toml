@@ -1,0 +1,65 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+[settings]
+# Enable newer mise backends such as aqua/ubi/go/npm/pipx where needed.
+experimental = true
+# Let `mise install`/shell activation install missing global tools on demand.
+auto_install = true
+# Keep generated lockfiles alongside config once installs begin.
+lockfile = true
+
+[settings.npm]
+# Prefer bun for npm-backed global CLIs once bun is installed by mise.
+package_manager = "bun"
+
+[shell_alias]
+# Keep an easy escape hatch for Helm 3 while Helm 4 is the default.
+helm3 = "mise x helm@3 -- helm"
+
+[tools]
+# Runtimes
+bun = "1.3.14"
+go = "1.26.0"
+node = "26.0.0"
+python = "3.14.0"
+uv = "0.11.17"
+
+# Core CLI tools currently installed via Homebrew and available via mise.
+aws-cli = { version = "2.34.56", symlink_bins = "true" }
+"pipx:azure-cli" = "2.86.0"
+"github:uutils/coreutils" = "0.2.2"
+"github:uutils/findutils" = "0.8.0"
+"github:uutils/sed" = "0.1.1"
+"aqua:jqlang/jq" = "1.8.1"
+"npm:marked" = "18.0.4"
+"pipx:platformio" = "6.1.19"
+"aqua:tldr-pages/tlrc" = "1.11.1"
+yq = "4.53.2"
+
+# Kubernetes / cloud-native tooling
+"aqua:docker/cli" = "29.5.2"
+docker-compose = "5.1.4"
+flux2 = "2.8.8"
+helm = "4.2.0"
+k9s = "0.50.18"
+kind = "0.31.0"
+kubie = "0.28.0"
+sops = "3.13.1"
+terragrunt = "1.0.6"
+vcluster = "0.34.1"
+velero = "1.18.1"
+
+# Developer tools
+"aqua:go-task/task" = "3.51.1"
+dyff = "1.12.0"
+flyctl = "0.4.57"
+fzf = "0.73.1"
+glab = "1.100.0"
+hadolint = "2.14.0"
+hyperfine = "1.20.0"
+neovim = "0.12.2"
+ollama = "0.24.0"
+pipx = "1.12.0"
+pre-commit = "4.6.0"
+ripgrep = "15.1.0"
+tree-sitter = "0.26.9"
