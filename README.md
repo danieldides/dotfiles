@@ -1,6 +1,21 @@
 # Dotfiles
 All my various configurations and customizatoins, accumulated in one place.
 
+## Mise
+
+Global CLI tools are gradually moving from Homebrew to mise.
+
+Initial setup:
+
+```bash
+./install.py          # links mise/ to ~/.config/mise
+mise trust ~/.config/mise/config.toml
+mise install
+```
+
+During the transition, keep Homebrew for GUI apps/casks and tools not yet sourced through mise.
+When a Brewfile formula is successfully managed by mise, remove it from `Brewfile` in a follow-up change.
+
 ## NeoVim
 (Requires >= 0.5)
 

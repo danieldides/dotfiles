@@ -1,3 +1,4 @@
+fish_add_path $HOME/.local/bin
 fish_add_path /opt/homebrew/bin
 
 # Podman-backed Docker on macOS
@@ -25,10 +26,14 @@ alias vim="nvim"
 
 alias gist="gh gist create"
 
-alias sed=gsed
+if type -q gsed
+    alias sed=gsed
+end
 
-# Fix pyenv
-alias brew="env PATH=(string replace (pyenv root)/shims '' \"\$PATH\") brew"
+# Keep Homebrew usable during the mise migration, while avoiding pyenv shims when present.
+if type -q pyenv
+    alias brew="env PATH=(string replace (pyenv root)/shims '' \"\$PATH\") brew"
+end
 
 set -gx VISUAL nvim
 set -gx EDITOR "$VISUAL"

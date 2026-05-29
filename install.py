@@ -70,6 +70,10 @@ def main():
             "destination": config_path("ghostty"),
         },
         {
+            "source": dotfile_path("mise"),
+            "destination": config_path("mise"),
+        },
+        {
             "source": dotfile_path("agents/skills"),
             "destination": os.path.join(os.path.expanduser("~"), ".agents", "skills"),
         },
