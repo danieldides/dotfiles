@@ -1,5 +1,7 @@
 fish_add_path $HOME/.local/bin
-fish_add_path /opt/homebrew/bin
+# Keep Homebrew available as a fallback without letting fish_user_paths
+# put it ahead of mise-managed tools.
+fish_add_path --path --move /opt/homebrew/bin
 
 # Podman-backed Docker on macOS
 # `podman machine start` exposes the Docker-compatible API at /var/run/docker.sock.
