@@ -2,71 +2,75 @@
 name: work-github-issue
 description: |
   Works a GitHub issue end-to-end using gh CLI: reads issue, creates branch,
-  implements changes, creates one signed conventional commit, opens PR with
-  close semantics, triages feedback by amending, and performs final ff-only merge after user approval.
+  implements changes, keeps one signed conventional commit (amended as needed),
+  opens PR, optionally requests @copilot review only when explicitly requested,
+  and performs final ff-only merge after user approval.
 metadata:
   author: Zach Callahan
-  version: "1.1"
+  version: "1.6"
 ---
 
 # Work GitHub Issue (gh CLI)
 
-## When to use this skill
+## Use when
 
 Use when the user wants an issue worked end-to-end: branch, implementation,
-single signed commit, PR, and final ff-only merge.
+single signed commit, PR, optional `@copilot` triage when explicitly requested,
+and final ff-only merge.
 
-## Required information
+## Required input
 
-Gather:
-
-1. **Issue identifier**: number or full URL.
-2. **Repository**: `owner/repo` (infer from git remote if possible).
-3. **Target base branch** (optional): default to repo default branch.
+1. Issue id (number or URL).
+2. Repository (`owner/repo`, infer from git remote when possible).
+3. Base branch (optional; default to repo default branch).
+4. Copilot review preference (optional; default no Copilot review unless the
+   invocation explicitly requests it).
 
 If issue id cannot be inferred, ask for it.
 
 ## Preconditions
 
-- `gh` is authenticated with repo access.
-- `gh` CLI is `2.88.0+` (`@copilot` reviewer support).
-- GPG signing is configured in git.
-- Working tree is clean before branch creation.
+- `gh` authenticated and repo-accessible.
+- `gh` version `2.88.0+` if Copilot review is explicitly requested.
+- GPG signing configured for git.
+- Working tree clean before branch creation.
 
-If the working tree is dirty, stop and ask the user how to proceed.
+If working tree is dirty, stop and ask user how to proceed.
 
 ## Guardrails
 
-- Ask the user only when truly blocked.
-- Do not paste the issue body into commit messages or PR body.
-- Keep exactly one commit for the issue across the full lifecycle (initial
-  implementation and all post-review fixes); maintain via amend.
-- Use `--force-with-lease` (never `--force`) after amend.
-- Do not merge until the user gives final approval.
+- Ask user only when truly blocked.
+- Keep exactly one commit for the issue across the full lifecycle; maintain via
+  amend.
+- Use `--force-with-lease` after amend (never `--force`).
+- Do not request Copilot review unless the invocation explicitly requests it.
+- When Copilot review is requested, keep review loops conservative and bounded.
+- Request another Copilot round only when the prior round found substantive
+  must-fix issues, or when the implemented work / follow-up fixes were broad
+  enough that another architectural pass is justified.
+- Do not request another Copilot review just to chase nits, style comments, or
+  newly-generated low-signal feedback.
+- Cap Copilot review requests at 3 total rounds. Prefer stopping earlier when
+  the first round is already low-signal and the change set is not
+  architecturally risky.
+- Do not paste issue body content into commit/PR text.
+- Do not merge before user approval.
+- Do not merge unless all non-skipped checks pass.
 
 ## Branch naming
 
-Use:
+Use `<issue-number>-<slugified-issue-title>`.
 
-```text
-<issue-number>-<slugified-issue-title>
-```
+Slug rules: lowercase ASCII; replace non-alphanumeric runs with `-`; collapse
+repeated `-`; trim edges; keep practical length (for example 60 chars).
 
-Slug rules: lowercase ASCII, replace non-alphanumeric runs with `-`, collapse
-repeated `-`, trim edges, keep practical length (for example 60 chars).
+If branch exists, append a short numeric or timestamp suffix.
 
-If the branch already exists, append a short numeric or timestamp suffix.
+## Commit + PR message rules
 
-## Conventional commit rules
-
-- Exactly one signed commit: `git commit -S`.
-- Subject is valid conventional commit (for example
-  `feat(auth): add session refresh endpoint`).
-- Subject line only: no body, no footer, no issue content.
-
-## PR body format
-
-Use exactly:
+- Commit must be signed: `git commit -S`.
+- Commit subject must be a valid conventional commit.
+- Commit body is required and must be:
 
 ```markdown
 Closes #<issue-number>
@@ -78,73 +82,91 @@ Closes #<issue-number>
 - <change 3>
 ```
 
-- PR title exactly matches commit subject.
 - Keep summary concise and implementation-focused.
+- PR title must match commit subject.
+- Create PR with commit fill so PR body comes from commit body:
+  `gh pr create --fill-verbose`.
 
-## Steps
+## Workflow
 
-1. Resolve repo and issue context.
+1. Resolve repo context: `gh repo view`.
+2. Read issue:
+   `gh issue view <issue-number> --repo <owner>/<repo> --json number,title,body,url,state,labels,assignees`.
+   If closed/inaccessible, stop and report why.
+3. Determine base branch: `gh repo view <owner>/<repo> --json defaultBranchRef`.
+4. Sync base (`git fetch`, `git checkout <base>`, `git pull --ff-only`) and
+   create issue branch.
+5. Implement from issue requirements; run relevant tests/validation.
+6. Create one signed commit using required message format; verify one commit on
+   top of base.
+7. Push branch: `git push -u origin <branch>`.
+8. Open PR with fill:
+   `gh pr create --repo <owner>/<repo> --base <base> --head <branch> --fill-verbose`.
+9. If the invocation explicitly requested Copilot review, request/wait for the
+   initial Copilot review via mise:
+   `mise run github:pr:copilot:request-and-wait --owner <owner> --repo <repo> --pr <pr-number>`.
+   This prints a Markdown Copilot review summary, including inline comments when
+   present. If you need a stable review window, capture a UTC RFC3339 timestamp
+   before requesting review and pass it through as:
+   `mise run github:pr:copilot:request-and-wait --owner <owner> --repo <repo> --pr <pr-number> --since <rfc3339-timestamp>`.
+   If you need to re-render the latest Copilot feedback later during triage,
+   use:
+   `mise run github:pr:copilot:report-feedback --owner <owner> --repo <repo> --pr <pr-number> --since <same-rfc3339-timestamp>`.
+   Reuse the same RFC3339 `--since` value so follow-up renders stay scoped to
+   the same Copilot review cycle. If unavailable, report and ask whether to
+   continue without Copilot. If Copilot review was not explicitly requested,
+   skip this step.
+10. If Copilot review was explicitly requested, triage Copilot feedback from the
+    mise-rendered Markdown summary and classify items as:
+    - must-fix: correctness/test/security/defects
+    - optional: style/preference
+    - needs-decision: behavior tradeoffs requiring user input
+    For accepted changes: modify code, re-run checks, amend + force-with-lease.
+    - **I am explicitly requesting you amend commits**
+    - If commit message unchanged: `git commit --amend -S --no-edit`
+    - If summary/body changed: `git commit --amend -S` and keep required body
+      format.
+11. If Copilot review was explicitly requested, decide whether another Copilot
+    round is warranted.
+    Default answer: no.
+    Request a follow-up Copilot review only when one or more of these are true:
+    - the previous round found real must-fix issues
+    - the fixes materially changed behavior, control flow, or architecture
+    - the original implementation was risky enough that a second pass is worth
+      the noise
+    Do not re-request review after only minor wording, formatting, or small
+    localized fixes. Stop after 3 total review rounds even if Copilot keeps
+    producing fresh nits.
+12. Validate checks gate:
+    - Quiet wait + final snapshot via mise task:
+      `mise run github:pr:checks:wait-and-report --owner <owner> --repo <repo> --pr <pr-number>`
+      Proceed only when checks are pass/skipping. On fail/cancel, return to
+      triage.
+13. After user approval, ff-only merge:
+    `git fetch origin && git checkout <base> && git merge --ff-only <branch> && git push origin <base>`.
+    If ff-only merge blocked, stop and report blocker.
 
-   - `gh repo view`
-   - Use `--repo <owner>/<repo>` consistently when needed.
+## Progress updates to user
 
-2. Read issue details.
+Report at these checkpoints:
 
-   - `gh issue view <issue-number> --repo <owner>/<repo> --json number,title,body,url,state,labels,assignees`
-   - If issue is closed or inaccessible, stop and report the reason.
-
-3. Determine base branch and ensure local sync.
-   - `gh repo view --repo <owner>/<repo> --json defaultBranchRef`
-   - Fetch remotes and ensure local base is up to date before branching.
-
-4. Create and check out the issue branch.
-   - Branch from latest base tip with generated name.
-
-5. Implement the issue.
-   - Work directly from issue requirements.
-   - Ask only for ambiguities that materially change behavior.
-   - Run relevant tests/validation before commit.
-
-6. Create a single signed conventional commit.
-   - Stage intended files and commit:
-     `git commit -S -m "<conventional-commit-subject>"`
-   - Verify only one commit exists on top of base.
-
-7. Push branch.
-   - `git push -u origin <branch-name>`
-
-8. Open PR targeting default branch.
-   - Create PR with title exactly equal to commit subject.
-   - Use required body format (`Closes #<issue-number>` + `## Summary` bullets).
-   - Prefer heredoc-safe body creation.
-
-## Suggested command sequence
-
-```bash
-gh repo view
-gh issue view <issue-number> --repo <owner>/<repo> --json number,title,body,url,state
-gh repo view --repo <owner>/<repo> --json defaultBranchRef
-git fetch origin
-git checkout <base-branch>
-git pull --ff-only origin <base-branch>
-git checkout -b <issue-branch>
-# implement + test
-git add <files>
-git commit -S -m "<conventional-commit-subject>"
-git push -u origin <issue-branch>
-gh pr create --repo <owner>/<repo> --base <base-branch> --head <issue-branch> --title "<conventional-commit-subject>" --body "<required-pr-body>"
-```
-
-## Output expected to user
-
-Report progress at key checkpoints:
-
-1. Issue loaded: number/title/url.
-2. Branch created and checked out.
-3. Validation results and single signed commit SHA.
-4. Review triage outcomes and any decisions required.
-5. Final merge result (or exact blocker).
+1. Issue loaded (number/title/url).
+2. Branch created/checked out.
+3. Validation result and commit SHA.
+4. PR URL and whether Copilot review was skipped or requested.
+5. Triage outcomes and decisions needed.
+6. Check status for all non-skipped checks.
+7. Merge result or exact blocker.
 
 ## Failure handling
 
-- If any CLI command fails, report the command, key error, and next action.
+- On command failure: report command, key error, next action.
+- If explicitly-requested Copilot feedback times out (15-minute bounded wait),
+  ask whether to continue with human review.
+- If Copilot has already been requested 3 times, stop the Copilot loop and move
+  forward with human judgment, remaining checks, and user approval.
+- If checks remain pending after bounded wait, ask whether to continue waiting
+  and list pending checks.
+- If checks fail/cancel, do not merge; report failing checks and return to
+  fix-and-amend loop.
+- If policy/protection blocks merge, do not bypass; report exact blocker.
