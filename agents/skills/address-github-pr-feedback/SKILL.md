@@ -1,6 +1,6 @@
 ---
 name: address-github-pr-feedback
-description: Addresses GitHub PR review feedback using gh CLI: triages comments, creates code patches when required, replies explaining changes or decisions, and squashes/amends commits after submitting fixes. Use when the user asks to address PR feedback, reviewer comments, requested changes, or review threads.
+description: Addresses GitHub PR review feedback using gh CLI: triages comments including Local Review Feedback, creates code patches when required, replies explaining changes or decisions, and squashes/amends commits after submitting fixes. Use when the user asks to address PR feedback, reviewer comments, requested changes, local review comments, or review threads.
 metadata:
   author: Daniel Dides
   version: "1.0"
@@ -13,7 +13,8 @@ metadata:
 Use this skill when the user wants review feedback on an existing GitHub pull
 request addressed end-to-end: inspect reviewer comments, implement required
 patches, respond to the feedback, and leave the PR with a clean squashed commit
-history.
+history. This includes `## Local Review Feedback` comments posted by
+`local-github-pr-feedback`.
 
 ## Required information
 
@@ -42,6 +43,8 @@ preserve unrelated changes and avoid touching them.
   make the requested change correct.
 - Reply to every handled feedback item with either the change made or the reason
   no change was made.
+- Treat unchecked `## Local Review Feedback` checklist items as actionable
+  feedback. Implement or explicitly decline each blocking/important item.
 - Keep reviewer-facing comments factual and concise. Include file/function names
   or test results when useful.
 - Prefer resolving review threads only after the change is pushed and the reply
@@ -50,6 +53,8 @@ preserve unrelated changes and avoid touching them.
   complete and comments have been submitted.
 - Use `--force-with-lease`, never `--force`, after rewriting PR branch history.
 - Do not merge the PR unless the user explicitly asks.
+- After feedback is addressed and pushed, return to `wait-github-pr-feedback` or
+  `merge-github-pr-when-ready` rather than attempting to merge in this skill.
 
 ## Steps
 
@@ -84,6 +89,10 @@ preserve unrelated changes and avoid touching them.
    gh api repos/<owner>/<repo>/issues/<pr-number>/comments
    ```
 
+   For comments headed `## Local Review Feedback`, inspect unchecked checklist
+   items as feedback items. Preserve the comment ID so it can be updated after
+   the items are handled.
+
    Read reviews and review states:
 
    ```bash
@@ -103,6 +112,7 @@ preserve unrelated changes and avoid touching them.
    - Comment URL or thread ID.
    - Author and exact concern.
    - Target file/line when present.
+   - Whether it came from `Local Review Feedback` and the source checklist item.
    - Decision: patch, no-op with explanation, or needs user input.
    - Validation needed.
 
@@ -127,20 +137,26 @@ preserve unrelated changes and avoid touching them.
    create a temporary fix commit first if needed, push it, reply to comments,
    then squash in step 9.
 
-7. Reply to each feedback item.
+7. Reply to each feedback item as a response, not a top-level PR comment.
 
-   For inline review comments, reply directly:
+    For review threads collected through GraphQL, reply to the thread directly:
 
-   ```bash
-   gh api repos/<owner>/<repo>/pulls/comments/<comment-id>/replies -f body='<reply body>'
-   ```
+    ```bash
+    gh api graphql -f query='mutation($threadId:ID!, $body:String!){ addPullRequestReviewThreadReply(input:{pullRequestReviewThreadId:$threadId, body:$body}) { comment { id url } } }' -f threadId='<thread-id>' -f body='<reply body>'
+    ```
 
-   For general PR comments, add a PR comment that references the original
-   commenter or comment URL:
+    For inline review comments when only the review comment database ID is
+    available, use the REST reply endpoint for that comment:
 
-   ```bash
-   gh pr comment <pr-number> --repo <owner>/<repo> --body '<reply body>'
-   ```
+    ```bash
+    gh api repos/<owner>/<repo>/pulls/<pr-number>/comments/<comment-id>/replies -f body='<reply body>'
+    ```
+
+    Do not use `gh pr comment` for handled feedback because it creates a
+    top-level PR conversation comment rather than a response to the feedback.
+    If a feedback item is a general PR conversation comment without a supported
+    threaded reply API, report that limitation to the user instead of posting a
+    top-level comment.
 
    Reply format:
 
@@ -155,6 +171,17 @@ preserve unrelated changes and avoid touching them.
    ```markdown
    I did not change this because <specific reason>. <Optional supporting detail>.
    ```
+
+   For `Local Review Feedback` comments, edit the original comment after all
+   checklist items are handled so future polling does not treat the same items
+   as new feedback:
+
+   ```bash
+   gh api repos/<owner>/<repo>/issues/comments/<comment-id> -X PATCH -f body='<updated body with handled items checked and short resolution notes>'
+   ```
+
+   Keep the original findings visible. Mark handled items with `[x]` and append
+   concise notes such as `Addressed in <short-sha>` or `Declined: <reason>`.
 
 8. Resolve handled review threads when appropriate.
 
@@ -209,11 +236,14 @@ Report:
 4. Replies posted and threads resolved, if applicable.
 5. Final commit count and whether history was force-pushed with
    `--force-with-lease`.
+6. Recommended next step: usually `wait-github-pr-feedback`, then
+   `merge-github-pr-when-ready` once feedback and checks are clear.
 
 ## Failure handling
 
-- If a comment cannot be replied to because the API endpoint rejects it, post a
-  normal PR comment referencing the original comment URL.
+- If a comment cannot be replied to because the API endpoint rejects it, do not
+  post a top-level fallback comment. Report the failed reply with the original
+  comment URL and error so the user can decide whether to comment manually.
 - If checks fail after patches, do not squash until the failure is investigated
   or explicitly accepted by the user.
 - If feedback requires a product or API decision, ask the user before changing
