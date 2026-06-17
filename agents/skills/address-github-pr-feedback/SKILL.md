@@ -45,6 +45,9 @@ preserve unrelated changes and avoid touching them.
   no change was made.
 - Treat unchecked `## Local Review Feedback` checklist items as actionable
   feedback. Implement or explicitly decline each blocking/important item.
+- Treat Codex comments that imply no issues were found, such as `Didn't find
+  any major issues.`, as non-blocking clearance. Do not tag Codex again or wait
+  for another Codex response solely because of that comment.
 - Keep reviewer-facing comments factual and concise. Include file/function names
   or test results when useful.
 - Prefer resolving review threads only after the change is pushed and the reply
@@ -92,6 +95,10 @@ preserve unrelated changes and avoid touching them.
    For comments headed `## Local Review Feedback`, inspect unchecked checklist
    items as feedback items. Preserve the comment ID so it can be updated after
    the items are handled.
+
+   For comments from Codex, classify messages that imply no issues were found
+   as already clear rather than actionable feedback. Examples include `Didn't
+   find any major issues.` or equivalent wording.
 
    Read reviews and review states:
 
@@ -237,7 +244,9 @@ Report:
 5. Final commit count and whether history was force-pushed with
    `--force-with-lease`.
 6. Recommended next step: usually `wait-github-pr-feedback`, then
-   `merge-github-pr-when-ready` once feedback and checks are clear.
+   `merge-github-pr-when-ready` once feedback and checks are clear. If the only
+   outstanding Codex signal is a no-issues-found message, proceed without
+   tagging Codex again.
 
 ## Failure handling
 

@@ -1,6 +1,6 @@
 ---
 name: merge-github-pr-when-ready
-description: Polls a GitHub PR until checks, local review feedback, reviewer feedback, and Codex connector approval are complete, ensures a single commit, rebases on origin/main when needed, and merges to main with git --ff-only. Use when asked to wait for PR checks, merge when ready, poll a PR, or ff-only merge a reviewed branch.
+description: Polls a GitHub PR until checks, local review feedback, and reviewer feedback are complete, optionally waits briefly for Codex connector review, ensures a single commit, rebases on origin/main when needed, and merges to main with git --ff-only. Use when asked to wait for PR checks, merge when ready, poll a PR, or ff-only merge a reviewed branch.
 metadata:
   author: Daniel Dides
   version: "1.0"
@@ -12,9 +12,10 @@ metadata:
 
 Use this skill when the user wants an existing GitHub pull request monitored and
 merged after it is ready: automated checks complete successfully, review
-feedback and local review feedback are resolved, the Codex connector has
-approved the changes, the PR branch has exactly one commit, and the branch can
-be fast-forward merged into `main`.
+feedback and local review feedback are resolved, the optional Codex connector
+review has completed or the short wait for a Codex signal has expired, the PR
+branch has exactly one commit, and the branch can be fast-forward merged into
+`main`.
 
 ## Required information
 
@@ -44,8 +45,11 @@ user how to proceed before checking out, rebasing, squashing, or merging.
 - Do not merge unless all required gates pass.
 - Do not bypass branch protection, failed checks, pending checks, or unresolved
   feedback.
-- Do not merge until the Codex connector has run and approved the changes. Treat
-  a Codex connector 👀 reaction as still reviewing and a 👍 reaction as approved.
+- Treat Codex connector review as optional. Wait briefly for a Codex connector
+  signal when one is expected, but do not block merge if Codex does not post an
+  emoji reaction or feedback within that short wait.
+- If Codex has posted feedback or a 👀 reaction, treat that as pending feedback
+  and do not merge until it is resolved or changes to 👍.
 - Keep the PR branch to exactly one commit before merge. Squash locally when
   necessary and push with `--force-with-lease`, never `--force`.
 - Merge by updating local `main` with `git merge --ff-only <branch>` and pushing
@@ -128,7 +132,7 @@ user how to proceed before checking out, rebasing, squashing, or merging.
    requested, or expected. Stop and report if any check fails, is cancelled, or
    requires action.
 
-6. Verify the Codex connector has run and approved the changes.
+6. Optionally wait briefly for the Codex connector review.
 
    Inspect PR comments, reviews, and reactions for the Codex connector signal:
 
@@ -144,14 +148,14 @@ user how to proceed before checking out, rebasing, squashing, or merging.
    gh api repos/<owner>/<repo>/issues/comments/<comment-id>/reactions -H 'Accept: application/vnd.github.squirrel-girl-preview+json'
    ```
 
-   Find the latest Codex connector comment or review status item. Do not merge
-   while its latest reaction is 👀 because that means review is still in progress.
-   Proceed only after the reaction changes to 👍, which means Codex has finished
-   and approved the changes.
+   Find the latest Codex connector comment or review status item. If Codex has
+   posted feedback or its latest reaction is 👀, treat that as pending feedback
+   and do not merge until the feedback is resolved or the reaction changes to 👍.
 
-   If the Codex connector comment/review cannot be found, continue polling until
-   it appears or the bounded wait expires. If the wait expires, report that Codex
-   approval is missing and ask whether to continue waiting.
+   If the Codex connector comment/review cannot be found, poll briefly, such as
+   for 2 to 5 minutes unless the user specified a different wait. If Codex still
+   has not posted an emoji reaction or feedback after that short wait, continue
+   without Codex review and report that Codex did not respond in time.
 
 7. Verify there is no pending, open feedback.
 
@@ -234,7 +238,7 @@ user how to proceed before checking out, rebasing, squashing, or merging.
 Report:
 
 1. PR URL and branch handled.
-2. Final check status, feedback status, and Codex connector approval status.
+2. Final check status, feedback status, and Codex connector status if present.
 3. Whether commits were squashed and force-pushed.
 4. Whether a rebase onto `origin/main` was required.
 5. Merge result and final `main` push status.
@@ -248,9 +252,10 @@ Report:
 - If unresolved conversations, unchecked local review findings, or blocking
   reviews exist, do not merge. Report the thread/comment URLs when available and
   use `address-github-pr-feedback`.
-- If the Codex connector is missing, still reviewing, or did not approve, do not
-  merge. Report the current reaction/status and continue polling only if the user
-  asks or the polling bound has not expired.
+- If the Codex connector is missing or did not post an emoji reaction or feedback
+  within the short optional wait, report that and continue without Codex review.
+- If Codex has posted feedback or a 👀 reaction, do not merge. Report the current
+  reaction/status and address or wait for it like other pending feedback.
 - If squashing is required but the final commit message is not clear, ask the
   user for the commit subject before rewriting history.
 - If `--force-with-lease` fails, fetch and inspect the new remote commits before
