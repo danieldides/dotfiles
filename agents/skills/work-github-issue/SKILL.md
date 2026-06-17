@@ -1,9 +1,9 @@
 ---
 name: work-github-issue
-description: Works a GitHub issue end-to-end using gh CLI: reads the issue, implements it, opens a PR, runs local PR feedback, requests up to three Codex reviews, waits for feedback, addresses feedback, and hands off to merge-github-pr-when-ready. Use when the user asks to work, implement, or complete a GitHub issue.
+description: Works a GitHub issue end-to-end using gh CLI: reads the issue, creates and comments an implementation plan, implements it, opens a PR, runs local PR feedback, requests up to three Codex reviews, waits for feedback, addresses feedback, and hands off to merge-github-pr-when-ready. Use when the user asks to work, implement, or complete a GitHub issue.
 metadata:
   author: Daniel Dides
-  version: "2.0"
+  version: "2.1"
 ---
 
 # Work GitHub Issue (gh CLI)
@@ -11,10 +11,11 @@ metadata:
 ## When to use this skill
 
 Use this skill when the user wants an issue worked end-to-end: read the issue,
-implement the requested change, open a PR, run local subagent review feedback,
-request bounded Codex connector review, wait for reviewer or automation
-feedback, address feedback when it appears, and then merge through the dedicated
-PR merge-readiness workflow.
+create and comment a detailed implementation plan, implement the requested
+change, open a PR, run local subagent review feedback, request bounded Codex
+connector review, wait for reviewer or automation feedback, address feedback
+when it appears, and then merge through the dedicated PR merge-readiness
+workflow.
 
 ## Required input
 
@@ -55,6 +56,10 @@ proceed before changing branches.
   fourth review; report that the cap was reached instead.
 - Use `wait-github-pr-feedback` after opening the PR to distinguish posted
   feedback from a PR that is ready to attempt merge.
+- Before implementation, require a detailed implementation plan in the issue
+  comments. Downstream implementation steps must read and follow that plan. If
+  no implementation plan comment is present after the planning phase, terminate
+  and wait for user input instead of implementing.
 
 ## Branch naming
 
@@ -98,7 +103,45 @@ Closes #<issue-number>
 
    Stop if the issue is closed or inaccessible.
 
-2. Create and sync the issue branch.
+2. Create and comment the implementation plan.
+
+   Use a high-thinking planning agent to develop a detailed implementation plan
+   before any branch creation or implementation. Prefer the `plan` agent with
+   high reasoning or thinking settings when available. The planning agent should
+   read the issue and relevant codebase context, but it must not edit files. It
+   must return a plan with at least:
+
+   - issue summary and goals
+   - relevant files or components to inspect or change
+   - proposed implementation steps
+   - validation and test strategy
+   - risks, assumptions, and open questions
+
+   Then use a build agent to comment the plan on the issue itself using `gh`.
+   The comment must be clearly identifiable with this heading:
+
+   ```markdown
+   ## Implementation Plan
+   ```
+
+   After the build agent posts the plan comment, clear the current context before
+   continuing the workflow. The resumed context should rely on the issue and the
+   posted implementation plan comment as the source of truth.
+
+3. Verify the implementation plan comment is present.
+
+   After context is cleared and before implementation, read the issue comments
+   and confirm a comment headed `## Implementation Plan` is available.
+
+   ```bash
+   gh issue view <issue-number> --repo <owner>/<repo> --comments
+   ```
+
+   If the implementation plan comment is missing, terminate and wait for user
+   input. Do not implement from memory or recreate the plan unless the user asks
+   you to restart the planning phase.
+
+4. Create and sync the issue branch.
 
    ```bash
    git fetch origin
@@ -107,15 +150,16 @@ Closes #<issue-number>
    git checkout -b <issue-number>-<slug>
    ```
 
-3. Implement the issue.
+5. Implement the issue.
 
+   - Read and follow the `## Implementation Plan` comment from the issue.
    - Make the smallest correct code changes that satisfy the issue.
    - Add or update tests when behavior changes or a regression needs coverage.
    - Run targeted validation first, then broader validation when practical.
    - If the issue requires a product or API decision that is not clear from the
      issue, ask the user before changing behavior.
 
-4. Create one signed commit.
+6. Create one signed commit.
 
    ```bash
    git add <intended-files>
@@ -130,14 +174,14 @@ Closes #<issue-number>
    git commit -S -m '<final conventional commit subject>'
    ```
 
-5. Push the branch and open the PR.
+7. Push the branch and open the PR.
 
    ```bash
    git push -u origin <branch>
    gh pr create --repo <owner>/<repo> --base <base-branch> --head <branch> --fill-verbose
    ```
 
-6. Request initial Codex connector review.
+8. Request initial Codex connector review.
 
    Request Codex review using the repository's configured connector trigger. If
    the trigger command or PR comment syntax is unknown, ask the user once before
@@ -147,21 +191,21 @@ Closes #<issue-number>
    and `merge-github-pr-when-ready` skills own polling for the Codex connector
    reaction changing from 👀 to 👍.
 
-7. Run local PR feedback.
+9. Run local PR feedback.
 
    Use the `local-github-pr-feedback` skill for the new PR. If it posts local
-   review findings, continue to step 9 so `address-github-pr-feedback` can
-   process them. If it finds no actionable local feedback, continue to step 8.
+   review findings, continue to step 11 so `address-github-pr-feedback` can
+   process them. If it finds no actionable local feedback, continue to step 10.
 
-8. Wait for PR feedback.
+10. Wait for PR feedback.
 
    Use the `wait-github-pr-feedback` skill for the new PR. If it reports posted
    reviewer feedback, requested changes, unresolved review threads, failed
-   checks with actionable failures, or Codex connector feedback, continue to step
-   9. If it reports no posted feedback and the PR is ready for merge readiness,
-   continue to step 10.
+   checks with actionable failures, or Codex connector feedback, continue to
+   step 11. If it reports no posted feedback and the PR is ready for merge
+   readiness, continue to step 12.
 
-9. Address feedback and keep the branch squashed.
+11. Address feedback and keep the branch squashed.
 
    Use the `address-github-pr-feedback` skill for reviewer comments, requested
    changes, unresolved review threads, local review comments, or feedback
@@ -193,18 +237,18 @@ Closes #<issue-number>
    report that the cap was reached and continue the loop with the latest
    available feedback.
 
-   Then return to step 7 so local review runs again on the updated diff before
+   Then return to step 9 so local review runs again on the updated diff before
    remote feedback polling resumes.
 
-10. Attempt merge readiness and merge.
+12. Attempt merge readiness and merge.
 
    Use the `merge-github-pr-when-ready` skill for the PR. That skill owns final
    checks, unresolved conversation checks, Codex connector approval, single
    commit enforcement, rebase-on-divergence, and ff-only merge into `main`.
 
    If `merge-github-pr-when-ready` reports new feedback, requested changes,
-   failed checks, or a fixable code issue, return to step 9. If it rebases or
-   squashes the branch, restart from step 7 so checks and feedback are evaluated
+   failed checks, or a fixable code issue, return to step 11. If it rebases or
+   squashes the branch, restart from step 9 so checks and feedback are evaluated
    against the latest commit. Do not reset the Codex review request count after a
    rebase or squash.
 
@@ -213,14 +257,17 @@ Closes #<issue-number>
 Report at these checkpoints:
 
 1. Issue loaded, including number, title, and URL.
-2. Branch created or checked out.
-3. Implementation summary and validation result.
-4. Commit SHA and PR URL.
-5. Codex review request count, such as `1/3`.
-6. Local feedback outcome.
-7. Feedback polling outcome.
-8. Feedback addressed, checks fixed, or user decision needed.
-9. Merge-readiness outcome from `merge-github-pr-when-ready`.
+2. Implementation plan posted to the issue, including the comment URL when
+   available.
+3. Implementation plan comment verified after context clearing.
+4. Branch created or checked out.
+5. Implementation summary and validation result.
+6. Commit SHA and PR URL.
+7. Codex review request count, such as `1/3`.
+8. Local feedback outcome.
+9. Feedback polling outcome.
+10. Feedback addressed, checks fixed, or user decision needed.
+11. Merge-readiness outcome from `merge-github-pr-when-ready`.
 
 ## Output expected to user
 
@@ -228,17 +275,21 @@ Report:
 
 1. Issue and PR URLs.
 2. Branch name and final commit SHA.
-3. Validation commands and results.
-4. Codex review request count and final Codex connector status.
-5. Local feedback result.
-6. Feedback handled or reason no feedback handling was needed.
-7. Merge outcome, or the exact blocker if the PR was not merged.
+3. Implementation plan comment URL or confirmation it was verified.
+4. Validation commands and results.
+5. Codex review request count and final Codex connector status.
+6. Local feedback result.
+7. Feedback handled or reason no feedback handling was needed.
+8. Merge outcome, or the exact blocker if the PR was not merged.
 
 ## Failure handling
 
 - If a command fails, report the command, key error, and next action.
 - If feedback requires a product or API decision, ask the user before changing
   behavior.
+- If the implementation plan comment is missing after the planning phase and
+  context clearing, terminate and wait for user input. Do not implement without
+  the posted plan.
 - If checks fail, fix the issue when it is clear, amend/squash, push with
   `--force-with-lease`, and restart feedback polling.
 - If Codex has already been requested three times and still has not approved,
