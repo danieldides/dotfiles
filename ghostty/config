@@ -10,3 +10,5 @@ adjust-cursor-thickness = 5
 font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
+
+shell-integration-features = ssh-terminfo,ssh-env
