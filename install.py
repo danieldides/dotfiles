@@ -3,6 +3,8 @@
 import errno
 import os
 import pathlib
+import shutil
+import subprocess
 
 
 config_dir = os.path.join(os.path.expanduser("~"), ".config")
@@ -46,6 +48,19 @@ def dotfile_path(directory):
     return os.path.join(pathlib.Path(__file__).parent.resolve(), directory)
 
 
+def apply_herdr_layout():
+    command = ["herdr-app", "do", "layout.switch", "--name", "main"]
+    if shutil.which(command[0]) is None:
+        print("Open Herdr, then run: " + " ".join(command))
+        return
+    result = subprocess.run(command, capture_output=True, text=True)
+    if result.returncode:
+        print(result.stderr or result.stdout)
+        print("Open Herdr, then run: " + " ".join(command))
+    else:
+        print("Activated Herdr's normal workspace with Windows 98 colors.")
+
+
 def main():
     if not os.path.exists(config_dir):
         print(f"{config_dir} does not exist. Making it now.")
@@ -70,6 +85,10 @@ def main():
             "destination": config_path("ghostty"),
         },
         {
+            "source": dotfile_path("herdr-app/settings.json"),
+            "destination": config_path("herdr-app/settings.json"),
+        },
+        {
             "source": dotfile_path("mise"),
             "destination": config_path("mise"),
         },
@@ -81,6 +100,8 @@ def main():
 
     for config in configurations:
         create_symlink(config["source"], config["destination"])
+
+    apply_herdr_layout()
 
 
 if __name__ == "__main__":

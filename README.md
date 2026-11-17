@@ -16,6 +16,32 @@ mise install
 During the transition, keep Homebrew for GUI apps/casks and tools not yet sourced through mise.
 When a Brewfile formula is successfully managed by mise, remove it from `Brewfile` in a follow-up change.
 
+## Herdr
+
+The desktop app keeps its normal **main** workspace layout and fonts, with
+Windows 98-inspired gray chrome and navy accents, explicitly in light mode.
+No desktop icons, taskbar, Clippy, or pixel fonts.
+
+With Herdr installed and open, run `./install.py`. It links
+`herdr-app/settings.json` into `~/.config/herdr-app/` and selects `main`.
+Herdr remembers the selected layout across restarts. If it was closed during
+installation, open it and run:
+
+```bash
+herdr-app do layout.switch --name main
+```
+
+The installer does not replace existing files. On a new machine with an existing
+`~/.config/herdr-app/settings.json`, back it up or merge its preferences before
+replacing it with the dotfiles symlink.
+
+Only personal settings are tracked. The bundled `paper` light theme is used
+with a white terminal background, gray panels, and navy accent overrides.
+Herdr manages its bundled layouts, themes, mods, fonts, and assets; they are
+not forked or overwritten. Session data,
+machine connections, window state, and generated files stay outside this repo.
+This configures the desktop app, not the separate `herdr` TUI.
+
 ## NeoVim
 (Requires >= 0.5)
 
@@ -92,7 +118,7 @@ fisher list > fish/fish_plugins
 - `fish/fish_variables` is gitignored as it contains system-specific universal variables
 - Use `secret.example.fish` as a template for new systems
 - `fish/conf.d/fish_frozen_*.fish` are migration files from fish 4.3 upgrade; these are system-specific and can be safely deleted if they cause issues
-- **Committed custom functions**: `fish/functions/aidev.fish`, `fish/functions/helm-readme.fish`, `fish/functions/whoseport.fish`
+- **Committed custom functions**: `fish/functions/helm-readme.fish`, `fish/functions/whoseport.fish`
 - **Ignored plugin functions**: All Fisher plugin files (`fisher.fish`, `__z*.fish`, `_nvm*.fish`, `nvm.fish`, `z.fish`, `nvm.fish` in conf.d/) are generated from `fish/fish_plugins` and should not be committed
 - Color themes and key bindings are system-specific; customize them using `fish_config` or by editing `~/.config/fish/conf.d/` files
 - **Pyenv and Brew**: The brew alias automatically removes pyenv shims from PATH to avoid conflicts. If you're not using pyenv, the alias will still work without issues

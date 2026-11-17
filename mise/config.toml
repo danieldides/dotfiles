@@ -70,4 +70,6 @@ tree-sitter = "0.26.9"
 age = "latest"
 talosctl = "latest"
 cilium-cli = "latest"
-opencode = "latest"
+"npm:@openai/codex" = "0.154.0"
+"npm:@opencode/cli" = { version = "latest", bun_args = "--trust" }
+herdr = "latest"

@@ -73,3 +73,10 @@ if type -q mise
     mise activate fish | source
     mise env -s fish | source
 end
+
+# Prefer Homebrew Bash without moving other Homebrew tools ahead of Mise.
+set -gx PATH /opt/homebrew/opt/bash/bin $PATH
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/danieldides/.lmstudio/bin
+# End of LM Studio CLI section
