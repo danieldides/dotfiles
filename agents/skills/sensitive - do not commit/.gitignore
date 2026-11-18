@@ -1,0 +1,4 @@
+# Track only this directory's public scaffolding, never its private skills.
+*
+!/.gitignore
+!/README.md
